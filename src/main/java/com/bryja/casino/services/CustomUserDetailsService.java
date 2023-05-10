@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             @Override
             public String getPassword() {
-                return null;
+                return user.password;
             }
 
             @Override

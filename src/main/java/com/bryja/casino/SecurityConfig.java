@@ -59,8 +59,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/swagger-ui/**", "/swagger-ui/#/", "/swagger-ui**").hasRole("USER")
                         //.requestMatchers("/h2-console/**", "/h2-console/#/", "/h2-console**").hasRole("USER")
-                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**", "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add").permitAll()
+                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**", "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta", "/adminpanelbonuses", "/adminpanelusers", "/bonuses", "/profile", "/register", "/table","/favicon", "/favion/**", "/sock/**", "/chathistory").permitAll()
                         .anyRequest().authenticated()
+                        .and()
                 )
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
@@ -91,6 +92,7 @@ public class SecurityConfig {
 
 
         return http.build();
+
 
     }
 

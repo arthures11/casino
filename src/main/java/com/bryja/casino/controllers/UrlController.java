@@ -6,23 +6,37 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UrlController {
-
-   // @RequestMapping(value="/dashboard")
-   // public ModelAndView getDashboard() {
-     //   return new ModelAndView("dashboard");
-   // }
-   // @RequestMapping(value="/profile")
-  //  public ModelAndView getProfile() {
-     //   return new ModelAndView("profile");
-  //  }
-   // @RequestMapping(value="/projects")
-   // public ModelAndView getProjects() {
-    //    return new ModelAndView("projects");
-   // }
- //   @RequestMapping(value="/projekt")
-  //  public ModelAndView getProject() {
-    //    return new ModelAndView("projekt");
-  //  }
+    @RequestMapping(value="/adminpanelbonuses")
+    public ModelAndView getadminbon() {
+        return new ModelAndView("adminpanelbonuses");
+    }    @RequestMapping(value="/bonuses")
+    public ModelAndView getbonuses() {
+        return new ModelAndView("bonuses");
+    }
+    @RequestMapping(value="/adminpanelusers")
+    public ModelAndView getadminusers() {
+        return new ModelAndView("adminpanelusers");
+    }
+    @RequestMapping(value="/login")
+    public ModelAndView getlogi() {
+        return new ModelAndView("login");
+    }
+    @RequestMapping(value="/profile")
+    public ModelAndView getprof() {
+        return new ModelAndView("profile");
+    }
+    @RequestMapping(value="/register")
+    public ModelAndView getregister() {
+        return new ModelAndView("register");
+    }
+    @RequestMapping(value="/table")
+    public ModelAndView gettable() {
+        return new ModelAndView("table");
+    }
+    @RequestMapping(value="/ruleta")
+    public ModelAndView getRuleta() {
+        return new ModelAndView("ruleta");
+    }
 
     @RequestMapping(value="/")
     public ModelAndView getindex() {

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/Button-Change-Text-on-Hover.css">
+    <link rel="stylesheet" href="assets/css/Chat.css">
+    <link rel="stylesheet" href="assets/css/Data-Table-styles.css">
+    <link rel="stylesheet" href="assets/css/Data-Table.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.js"></script>
+    <link rel="stylesheet" href="assets/css/info-box.css">
+    <link rel="stylesheet" href="assets/css/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.css">
+    <link rel="stylesheet" href="assets/css/Navbar-With-Button-icons.css">
+    <link rel="stylesheet" href="assets/css/RULETTE.css">
+    <style>
+        .nav-linky.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: red;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-money-check-alt"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>kasynko</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="/profile"><i class="fas fa-user"></i><span>Profil</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/bonuses"><i class="fas fa-table"></i><span>Bonusy</span></a><a class="nav-link" href="/adminpanelusers"><i class="far fa-smile-wink"></i><span>Admin</span></a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a href="/#"  style="margin-right: 15px;"><i class="fas fa-dice me-2 text-info nav-linky active"></i><span class="d-inline-block d-sm-none d-md-inline-block">kostka</span></a><a href="/ruleta" style="margin-right: 15px;"><i class="fa fa-gamepad me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">ruletka</span></a><a href="/ruleta" style="margin-right: 215px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-2 text-info">
+                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                                <path d="M512 80C512 98.01 497.7 114.6 473.6 128C444.5 144.1 401.2 155.5 351.3 158.9C347.7 157.2 343.9 155.5 340.1 153.9C300.6 137.4 248.2 128 192 128C183.7 128 175.6 128.2 167.5 128.6L166.4 128C142.3 114.6 128 98.01 128 80C128 35.82 213.1 0 320 0C426 0 512 35.82 512 80V80zM160.7 161.1C170.9 160.4 181.3 160 192 160C254.2 160 309.4 172.3 344.5 191.4C369.3 204.9 384 221.7 384 240C384 243.1 383.3 247.9 381.9 251.7C377.3 264.9 364.1 277 346.9 287.3C346.9 287.3 346.9 287.3 346.9 287.3C346.8 287.3 346.6 287.4 346.5 287.5L346.5 287.5C346.2 287.7 345.9 287.8 345.6 288C310.6 307.4 254.8 320 192 320C132.4 320 79.06 308.7 43.84 290.9C41.97 289.9 40.15 288.1 38.39 288C14.28 274.6 0 258 0 240C0 205.2 53.43 175.5 128 164.6C138.5 163 149.4 161.8 160.7 161.1L160.7 161.1zM391.9 186.6C420.2 182.2 446.1 175.2 468.1 166.1C484.4 159.3 499.5 150.9 512 140.6V176C512 195.3 495.5 213.1 468.2 226.9C453.5 234.3 435.8 240.5 415.8 245.3C415.9 243.6 416 241.8 416 240C416 218.1 405.4 200.1 391.9 186.6V186.6zM384 336C384 354 369.7 370.6 345.6 384C343.8 384.1 342 385.9 340.2 386.9C304.9 404.7 251.6 416 192 416C129.2 416 73.42 403.4 38.39 384C14.28 370.6 .0003 354 .0003 336V300.6C12.45 310.9 27.62 319.3 43.93 326.1C83.44 342.6 135.8 352 192 352C248.2 352 300.6 342.6 340.1 326.1C347.9 322.9 355.4 319.2 362.5 315.2C368.6 311.8 374.3 308 379.7 304C381.2 302.9 382.6 301.7 384 300.6L384 336zM416 278.1C434.1 273.1 452.5 268.6 468.1 262.1C484.4 255.3 499.5 246.9 512 236.6V272C512 282.5 507 293 497.1 302.9C480.8 319.2 452.1 332.6 415.8 341.3C415.9 339.6 416 337.8 416 336V278.1zM192 448C248.2 448 300.6 438.6 340.1 422.1C356.4 415.3 371.5 406.9 384 396.6V432C384 476.2 298 512 192 512C85.96 512 .0003 476.2 .0003 432V396.6C12.45 406.9 27.62 415.3 43.93 422.1C83.44 438.6 135.8 448 192 448z"></path>
+                            </svg><span class="d-inline-block d-sm-none d-md-inline-block">rzut monetą</span></a><div class="">
+                        <div class="authenticated"style="display:none">
+<span class="info-box-icon"><svg class="bi bi-coin me-2 text-info" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+
+    <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"></path>
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+    <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+</svg></span>
+                            <span class="info-box-text">TWÓJ BALANS: </span>
+                            <span id="kasa" class="info-box-number">1,410</span>
+                        </div>
+</div>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="me-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="me-3">
+                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 12, 2019</span>
+                                                <p>A new monthly report is ready to download!</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="me-3">
+                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 7, 2019</span>
+                                                <p>$290.29 has been deposited into your account!</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="me-3">
+                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 2, 2019</span>
+                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                            </div>
+                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
+                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                                <div class="status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
+                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                                <div class="bg-warning status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
+                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
+                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
+                                            </div>
+                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="container authenticated"  style="display:none"><div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="user" class="d-none d-lg-inline me-2 text-gray-600 small"></span><img id="avatar" class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="container unauthenticated"><button class="button" type="button" data-hover="LOGOWANIE"><a href="/login"><span>ZALOGUJ SIĘ ABY ZAGRAĆ</span></a></button></div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4"></div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xxl-8 offset-xxl-0 mb-4 bg-dark">
+                            <div class="card shadow mb-4"></div><div class="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
+  <i class="fas fa-dice me-2 text-info"></i>
+  <h4 class="mb-0">KOSTKA</h4>
+</div><div class ="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option1" autocomplete="off" class="radio-button-1"><i class="fa fa-arrow-down me-2 text-info"></i>PONIŻEJ
+  </label>
+        <button id="animate-btn" class="btn btn-primary" type="button">LOSUJ </button>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option2" autocomplete="off" class="radio-button-2"> <i class="fa fa-arrow-up me-2 text-info"></i>POWYŻEJ
+  </label>
+</div>
+</div>
+<div class="align-items-center bg-dark px-3 py-2 justify-content-center">
+<div class="form-group row ">
+  <label for="input1" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
+  <div class="col-sm-8">
+<input type="text" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="123.01">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="input2" class="text-white col-sm-4 col-form-label text-right">Szansa na wygraną:</label>
+  <div class="col-sm-8">
+      <input type="text" placeholder="50.00%" name="chance-input" inputmode="decimal" value="50%">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="input3" class="text-white col-sm-4 col-form-label text-right">Potencjalny zysk:</label>
+  <div class="col-sm-8">
+    <input type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="555.30" min="0.01" readonly>
+  </div>
+</div>
+</div><div class="row bg-dark mb-5">
+  <div class="col-sm-3 d-flex justify-content-center">
+    <div class="egg">
+      <span class="number">1</span>
+    </div>
+  </div>
+  <div class="col-sm-3 d-flex justify-content-center">
+    <div class="egg">
+      <span class="number">2</span>
+    </div>
+  </div>
+  <div class="col-sm-3 d-flex justify-content-center">
+    <div class="egg">
+      <span class="number">3</span>
+    </div>
+  </div>
+  <div class="col-sm-3 d-flex justify-content-center">
+    <div class="egg">
+      <span class="number">4</span>
+    </div>
+  </div>
+</div><small class="form-text text-white">Historia gier w kostkę:</small>
+
+<table id="example" class="table table-striped table-bordered text-white" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>ID LOSU</th>
+                <th>CZAS</th>
+                <th>POSTAWIONO</th>
+                <th>SZANSA</th>
+                <th>WYLOSOWANO</th>
+                <th>PROFIT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>09/05/2023</td>
+                <td>10</td>
+                <td>50%</td>
+                <td>9999</td>
+                <td>19.80</td>
+            </tr>
+        </tbody>
+    </table>
+                        </div>
+                        <div class="col-xxl-4 offset-xxl-0"><section style="background-color: #eee;">
+  <div>
+
+    <div class="row d-flex justify-content-center">
+      <div class="">
+
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center"
+            style="border-top: 4px solid #ffa900;">
+<div class="dropdown">
+  <h5 class="mb-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Czat PL</h5>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">English</a>
+    <a class="dropdown-item" href="#">German</a>
+    <a class="dropdown-item" href="#">RAGE room</a>
+  </div>
+</div>
+            <div class="d-flex flex-row align-items-center">
+              <span class="badge bg-warning me-3">20</span>
+              <i class="fas fa-minus me-3 text-muted fa-xs"></i>
+              <i class="fas fa-comments me-3 text-muted fa-xs"></i>
+              <i class="fas fa-times text-muted fa-xs"></i>
+            </div>
+          </div>
+          <div id="chatroom" class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 650px; overflow: auto;">
+
+              
+          
+          </div>
+          <div class="card-footer text-muted d-flex justify-content-start align-items-center">
+            <div class="input-group mb-0">
+                <div class="container authenticated" style="display:none">
+                    <input id="chati" type="text" class="form-control" placeholder="napisz wiadomość..."
+                           aria-label="btninputsend" aria-describedby="button-addon2" />
+                    <button class="btn btn-warning" type="button" id="btnsend" style="padding-top: .55rem;" >
+                        wyślij
+                    </button>
+
+                </div>
+                <div class="container unauthenticated">
+
+                    <input type="text" class="form-control" placeholder="ZALOGUJ SIĘ ABY PISAĆ"
+                           aria-label="Recipient's username" aria-describedby="button-addon2" disabled />
+                    <button class="btn btn-warning" type="button" id="button-addon2" style="padding-top: .55rem;" disabled>
+                        wyślij
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Bryja &amp; Bolechów 2023</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters-1.js"></script>
+    <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters-2.js"></script>
+    <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+<script>
+    $(document).ready(function() {
+        $('input[type="radio"]').on('change', function() {
+            $('label').removeClass('active');
+            if ($(this).is(':checked')) {
+                $(this).parent('label').addClass('active');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() { //animacja jajek
+        // Set initial numbers for the eggs
+        $('#egg1 .number').text(1);
+        $('#egg2 .number').text(2);
+        $('#egg3 .number').text(3);
+        $('#egg4 .number').text(4);
+
+        // Animate the eggs on click of the button
+        $('#animate-btn').click(function() {
+            $('.egg').each(function(index) {
+                var egg = $(this);
+                setTimeout(function() {
+                    egg.addClass('animate');
+                    // Change the number inside the egg after the animation is complete
+                    setTimeout(function() {
+                        var newNumber = Math.floor(Math.random() * 10);
+                        egg.find('.number').text(newNumber);
+                        egg.removeClass('animate');
+                    }, 1000);
+                }, index * 200);
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    var chatWindow = document.getElementById("chatroom");
+    $.get("/user", function(data) {
+        $("#user").html('Witamy, '+data.name);
+        $(".unauthenticated").hide()
+        $(".authenticated").show()
+        $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
+        $('#kasa').text(data.balance);
+    });
+
+    $.get("/chathistory", function(data) {
+        console.log(data)
+        for(let i=data.length-1;i>=0;i--) {
+            let lastIndex = data[i].timestamp.lastIndexOf(":");
+            data[i].timestamp = data[i].timestamp.substring(0, lastIndex);
+            data[i].timestamp = data[i].timestamp.replace(/T/g, ' ');
+            var obj = `            <div class="d-flex justify-content-between">
+              <p class="small mb-1">`+data[i].author_name+`</p>
+              <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
+            </div>
+            <div class="d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+data[i].avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+data[i].content+`</p>
+              </div>
+            </div>`
+            $('#chatroom').append(obj)
+        }
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    });
+</script>
+
+<script type="text/javascript">
+    var logout = function() {
+        $.post("/logout", function() {
+            $("#user").html('');
+            $(".unauthenticated").show();
+            $(".authenticated").hide();
+            console.log(1)
+        })
+        return true;
+    }
+
+    var logout = function() {
+    }
+
+</script>
+
+<script>
+    connect();
+    async function connect(){
+        var socket = new SockJS('/sock');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            //setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages/english', function (mess) {
+                const oa = JSON.parse(mess.body);
+                let lastIndex = oa.timestamp.lastIndexOf(":");
+                oa.timestamp = oa.timestamp.substring(0, lastIndex);
+                oa.timestamp = oa.timestamp.replace(/T/g, ' ');
+                var obj = `            <div class="d-flex justify-content-between">
+              <p class="small mb-1">`+oa.author_name+`</p>
+              <p class="small mb-1 text-muted">`+oa.timestamp+`</p>
+            </div>
+            <div class="d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+oa.avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+oa.content+`</p>
+              </div>
+            </div>`
+                $('#chatroom').append(obj)
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            });
+        });
+
+    }
+
+
+    var sendButton = document.getElementById("btnsend");
+    sendButton.addEventListener("click", function() {
+        var inputField = document.querySelector("input[aria-label='btninputsend']");
+        var message = {
+            content: inputField.value
+        };
+        $('#chati').val('')
+        stompClient.send("/app/chat/english", {}, JSON.stringify({'content': message.content}));
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+
+    });
+
+    $(document).on("keydown", function(event) {
+        if (event.which === 13) {
+            $("#btnsend").click();
+        }
+    });
+
+
+</script>
+</html>

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.bryja</groupId>
 	<artifactId>casino</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.3</version>
 	<name>casino</name>
 	<description>projekt na NTW</description>
 	<properties>
@@ -31,11 +31,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlinx</groupId>
-			<artifactId>kotlinx-serialization-core-jvm</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+
+
+
+
 
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -46,7 +45,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
 		</dependency>
 
 		<dependency>
@@ -58,25 +56,18 @@
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
-			<version>3.1.0.RELEASE</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>com.sun.istack</groupId>
 			<artifactId>istack-commons-runtime</artifactId>
-			<version>4.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,10 +80,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -101,38 +88,31 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-bindings -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-bindings -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.26</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
 
 	</dependencies>
 
@@ -141,6 +121,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.0.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<configuration>
+					<metadataRepository>
+						<dependencies>
+							<dependency>
+								<groupId>org.hibernate.orm</groupId>
+								<artifactId>hibernate-core</artifactId>
+								<metadataVersion>6.1.1.Final</metadataVersion>
+							</dependency>
+						</dependencies>
+					</metadataRepository>
+				</configuration>
+				<version>0.9.19</version>
 			</plugin>
 		</plugins>
 	</build>
