@@ -32,22 +32,26 @@ public class ScheduledTasks {
         for (Bonuses bonus : bonuses) {
             int hours = bonus.getEvery_hours();
             double toadd = bonus.getAmount();
+            String type = bonus.getName();
             String cronExpression = "0 0 */" + hours + " * * *";
 
-            taskScheduler.schedule(new UpdateBalancesTask(toadd), new CronTrigger(cronExpression));
+            taskScheduler.schedule(new UpdateBalancesTask(toadd, type), new CronTrigger(cronExpression));
         }
     }
 
     private class UpdateBalancesTask implements Runnable {
         private double toadd;
 
-        public UpdateBalancesTask(double toadd) {
+        private String type;
+
+        public UpdateBalancesTask(double toadd, String type) {
             this.toadd = toadd;
+            this.type = type;
         }
 
         @Override
         public void run() {
-            userController.updateBalanceForAllUsers(toadd);
+            userController.updateBalanceForAllUsers(toadd, type);
         }
     }
 }

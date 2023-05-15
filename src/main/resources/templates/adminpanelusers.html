@@ -72,35 +72,14 @@
                                 </div>
                             </li>
                             <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 12, 2019</span>
-                                            <p>A new monthly report is ready to download!</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 7, 2019</span>
-                                            <p>$290.29 has been deposited into your account!</p>
-                                        </div>
-                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="me-3">
-                                            <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 2, 2019</span>
-                                            <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                        </div>
-                                    </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                    <div id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">usuń wszystkie</a>
                                     </div>
                                 </div>
                             </li>
                             <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">0</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
@@ -184,7 +163,7 @@
 						<h2>Zarządzanie <b>Userami</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj usera</span></a>
+						<a href="#" onclick="adduser()" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj usera</span></a>
 					</div>
                 </div>
             </div>
@@ -304,13 +283,81 @@
     <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Bonus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                    <form id="addForm" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="name">Nazwa usera:</label>
+                                <input type="text" class="form-control" id="newUserName" name="newUserName">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email usera:</label>
+                                <input type="email" class="form-control" id="newUserEmail" name="newUserEmail">
+                            </div>
+                            <div class="form-group">
+                                <label for="balance">hasełko:</label>
+                                <input type="password" class="form-control" id="newUserPassword" name="newUserPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="balance">powtórz:</label>
+                                <input type="password" class="form-control" id="newUserPasswordRepeat" name="newUserPasswordRepeat">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addNewUser()">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function deleteAlerts(){
+
+            $.ajax({
+                url: "/alerts/removeall",
+                type: "DELETE",
+                success: function() {
+                    console.log("BONUS deleted successfully");
+                    location.reload()
+                },
+                error: function() {
+                    console.log("Error deleting user");
+                }
+            });
+
+        }
         $.get("/user", function(data) {
             $("#user").html('Witamy, '+data.name);
             $(".unauthenticated").hide()
             $(".authenticated").show()
             $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
             $('#kasa').text(data.balance.toFixed(2));
+            for(let i=0;i<data.notyfikacje.length;i++){
+                var t = `<a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="me-3">
+                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">`+data.notyfikacje[i].date+`</span>
+                                                <p>`+data.notyfikacje[i].opis+`</p>
+                                            </div>
+                                        </a>`
+
+                $('#notifikacje').append(t)
+            }
+            $('#alertamount').text(data.notyfikacje.length);
         });
     </script>
 
@@ -390,6 +437,32 @@
     </script>
 
     <script>
+
+        function addNewUser(){
+
+            $.post({
+                url: "/user/rawadd?passwordrepeat="+$("#newUserPasswordRepeat").val(),
+                data: JSON.stringify({
+                        name: $("#newUserName").val(),
+                        email: $("#newUserEmail").val(),
+                        password: $("#newUserPassword").val(),
+                }),
+                headers: { "Content-Type": "application/json" },
+                success: function(data) {
+                    console.log("Response from server:", data);
+                    location.reload()
+                },
+                error: function(error) {
+                    console.error("Error from server:", error);
+                }
+            });
+
+        }
+
+        function adduser(){
+            $('#addUserModal').modal('show');
+        }
+
 
         function remove(id){
             $.ajax({

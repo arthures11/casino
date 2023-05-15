@@ -70,9 +70,15 @@ public class SecurityConfig {
                 //.and()
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/dice/**", "/user", "/upload-avatar" ,"/settings/apply", "/admin/**", "/users/{id}", "/user/delete/**", "/bonus/delete/{id}", "/bonuses/addnew", "/bonuses/edit/{id}").hasAnyRole("USER", "MOD")
+                        .requestMatchers("/dice/**", "/user", "/upload-avatar" ,"/settings/apply",
+                                "/users/{id}", "/user/delete/**", "/bonus/delete/{id}", "/bonuses/addnew", "/bonuses/edit/{id}",
+                                "/user/rawadd","/bonuses/history", "/bonuses/claim", "/alerts/removeall").hasAnyRole("USER", "MOD", "ADMIN")
+                        .requestMatchers("/admin/**", "/adminpanelusers", "/adminpanelbonuses").hasRole("ADMIN")
                         //.requestMatchers("/h2-console/**", "/h2-console/#/", "/h2-console**").hasRole("USER")
-                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**", "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta", "/adminpanelbonuses", "/adminpanelusers", "/bonuses", "/profile", "/register", "/table", "/favicon", "/sock/**", "/chathistory/**", "/usersonline").permitAll()
+
+                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**",
+                                "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta",
+                                "/bonuses", "/profile", "/register", "/table", "/favicon", "/sock/**", "/chathistory/**", "/usersonline").permitAll()
                        // .anyRequest().authenticated()
                         .and()
                 )

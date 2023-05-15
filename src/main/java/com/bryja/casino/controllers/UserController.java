@@ -35,17 +35,21 @@ public class UserController {
 
     private final DiceHistoryRepository diceHistoryRepository;
 
+    private final BonusHistoryRepository bonusHistoryRepository;
     private final BonusesRepository bonusesRepository;
+    private final NotificationRepository notificationRepository;
 
     private final MessageRepository messageRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, BonusesRepository bonusesRepository, MessageRepository messageRepository) {
+    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, BonusHistoryRepository bonusHistoryRepository, BonusesRepository bonusesRepository, NotificationRepository notificationRepository, MessageRepository messageRepository) {
         this.repository = repository;
         this.rolerep = rolerep;
         this.diceHistoryRepository = diceHistoryRepository;
+        this.bonusHistoryRepository = bonusHistoryRepository;
         this.bonusesRepository = bonusesRepository;
+        this.notificationRepository = notificationRepository;
         this.messageRepository = messageRepository;
     }
 
@@ -83,8 +87,28 @@ public class UserController {
 
         }
     }
+
+    @PostMapping(value ="/user/rawadd", consumes = {"*/*"})
+    public String addNewUser(Authentication authentication, @RequestParam(value = "passwordrepeat") String rep, @RequestBody User usr) {
+
+        if(!rep.equals(usr.password)){
+            return "hasla nie zgadzaja sie";
+        }
+
+        User a = new User(usr.getName(),usr.getEmail(),passwordEncoder.encode(rep));
+        a.setRoles(Arrays.asList(rolerep.findByName("ROLE_USER")));
+        if (emailExists(a.getEmail())) {
+            return "email juz istnieje";
+        }
+        else{
+            repository.save(a);
+        }
+        return "ok";
+    }
     @Autowired
     private WebSocketMessageBrokerStats webSocketStats;
+
+
 
 
     @GetMapping(value="/usersonline", consumes = {"*/*"})
@@ -115,14 +139,12 @@ public class UserController {
     }
 
 
-    public void getWebSocketSessionCount() {
-        System.out.println(webSocketStats.getSockJsTaskSchedulerStatsInfo());
-    }
+
     @GetMapping(value="/user", consumes = {"*/*"})
     public User user(Authentication authentication) {
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
-        getWebSocketSessionCount();
+
 
         return usr;
     }
@@ -190,6 +212,24 @@ public class UserController {
         return msgs;
     }
 
+    @GetMapping(value="/bonuses/history", consumes = {"*/*"})
+    public List<BonusHistory> getBonusesHistory(Authentication authentication) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+
+        List<BonusHistory> msgs = bonusHistoryRepository.findFirst20ByUserIdOrderByIdDesc(usr.getId());
+
+        return msgs;
+    }
+
+
+    @PostMapping(value="/bonuses/claim", consumes = {"*/*"})
+    @Transactional
+    public String claimBonuses(Authentication authentication) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+        usr.setBalance(usr.getBalance()+usr.getBonuses());
+        usr.setBonuses(0);
+        return "ok";
+    }
 
     @PostMapping(value="/bonuses/addnew", consumes = {"*/*"})
     public String addNewBonus(Authentication authentication, @RequestBody Bonuses bns) {
@@ -213,6 +253,17 @@ public class UserController {
 
         User usr = user.get();
         repository.delete(usr);
+
+        return "success";
+    }
+
+    @Transactional
+    @DeleteMapping(value="/alerts/removeall", consumes = {"*/*"})
+    public String removeAlerts(Authentication authentication) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+        usr.getNotyfikacje().clear();
+        notificationRepository.deleteAllByUserId(usr.getId());
+        repository.save(usr);
 
         return "success";
     }
@@ -416,10 +467,20 @@ public class UserController {
     }
 
     @Transactional
-    public void updateBalanceForAllUsers(double balanceToAdd) {
+    public void updateBalanceForAllUsers(double balanceToAdd, String type) {
         List<User> users = repository.findAll();
         for (User user : users) {
             user.setBonuses(user.getBonuses() + balanceToAdd);
+
+            List<Notification> a = user.getNotyfikacje();
+            a.add(new Notification("nowy bonus został dodany: "+type+" +"+balanceToAdd+"żetonów", new Date(),user));
+            user.setNotyfikacje(a);
+            List<BonusHistory> b = user.getBonus_history();
+            b.add(new BonusHistory(LocalDateTime.now(),type, balanceToAdd, user));
+            user.setBonus_history(b);
+
+          //  user.getBonus_history().add(new BonusHistory(LocalDateTime.now(),type, balanceToAdd, user));
+           // user.getNotyfikacje().add(new Notification("nowy bonus został dodany: "+type+" +"+balanceToAdd+"żetonów", new Date(),user));
             repository.save(user);
         }
     }

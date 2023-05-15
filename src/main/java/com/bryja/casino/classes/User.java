@@ -79,6 +79,12 @@ import java.util.List;
             this.balance = bal;
         }
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     public List<DiceHistory> getDice_history() {
         return dice_history;
     }
