@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="assets/css/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.css">
     <link rel="stylesheet" href="assets/css/Navbar-With-Button-icons.css">
     <link rel="stylesheet" href="assets/css/RULETTE.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -32,7 +33,7 @@
                     <div class="sidebar-brand-text mx-3"><span>kasynko</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+                <ul class="navbar-nav text-light authenticated" id="accordionSidebar" style="display:none">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link active" href="/profile"><i class="fas fa-user"></i><span>Profil</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/bonuses"><i class="fas fa-table"></i><span>Bonusy</span></a><a class="nav-link" href="/adminpanelusers"><i class="far fa-smile-wink"></i><span>Admin</span></a></li>
@@ -45,12 +46,13 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a href="/#" style="margin-right: 15px;"><i class="fas fa-dice me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">kostka</span></a><a href="/ruleta" style="margin-right: 15px;"><i class="fa fa-gamepad me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">ruletka</span></a><a href="#" style="margin-right: 215px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-2 text-info">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
-                                <path d="M512 80C512 98.01 497.7 114.6 473.6 128C444.5 144.1 401.2 155.5 351.3 158.9C347.7 157.2 343.9 155.5 340.1 153.9C300.6 137.4 248.2 128 192 128C183.7 128 175.6 128.2 167.5 128.6L166.4 128C142.3 114.6 128 98.01 128 80C128 35.82 213.1 0 320 0C426 0 512 35.82 512 80V80zM160.7 161.1C170.9 160.4 181.3 160 192 160C254.2 160 309.4 172.3 344.5 191.4C369.3 204.9 384 221.7 384 240C384 243.1 383.3 247.9 381.9 251.7C377.3 264.9 364.1 277 346.9 287.3C346.9 287.3 346.9 287.3 346.9 287.3C346.8 287.3 346.6 287.4 346.5 287.5L346.5 287.5C346.2 287.7 345.9 287.8 345.6 288C310.6 307.4 254.8 320 192 320C132.4 320 79.06 308.7 43.84 290.9C41.97 289.9 40.15 288.1 38.39 288C14.28 274.6 0 258 0 240C0 205.2 53.43 175.5 128 164.6C138.5 163 149.4 161.8 160.7 161.1L160.7 161.1zM391.9 186.6C420.2 182.2 446.1 175.2 468.1 166.1C484.4 159.3 499.5 150.9 512 140.6V176C512 195.3 495.5 213.1 468.2 226.9C453.5 234.3 435.8 240.5 415.8 245.3C415.9 243.6 416 241.8 416 240C416 218.1 405.4 200.1 391.9 186.6V186.6zM384 336C384 354 369.7 370.6 345.6 384C343.8 384.1 342 385.9 340.2 386.9C304.9 404.7 251.6 416 192 416C129.2 416 73.42 403.4 38.39 384C14.28 370.6 .0003 354 .0003 336V300.6C12.45 310.9 27.62 319.3 43.93 326.1C83.44 342.6 135.8 352 192 352C248.2 352 300.6 342.6 340.1 326.1C347.9 322.9 355.4 319.2 362.5 315.2C368.6 311.8 374.3 308 379.7 304C381.2 302.9 382.6 301.7 384 300.6L384 336zM416 278.1C434.1 273.1 452.5 268.6 468.1 262.1C484.4 255.3 499.5 246.9 512 236.6V272C512 282.5 507 293 497.1 302.9C480.8 319.2 452.1 332.6 415.8 341.3C415.9 339.6 416 337.8 416 336V278.1zM192 448C248.2 448 300.6 438.6 340.1 422.1C356.4 415.3 371.5 406.9 384 396.6V432C384 476.2 298 512 192 512C85.96 512 .0003 476.2 .0003 432V396.6C12.45 406.9 27.62 415.3 43.93 422.1C83.44 438.6 135.8 448 192 448z"></path>
-                            </svg><span class="d-inline-block d-sm-none d-md-inline-block">rzut monetą</span></a><div class="">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a href="/#"  style="margin-right: 15px;"><i class="fas fa-dice me-2 text-info nav-linky active"></i><span class="d-inline-block d-sm-none d-md-inline-block">kostka</span></a><a href="/ruleta" style="margin-right: 15px;"><i class="fa fa-gamepad me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">ruletka</span></a><a href="/ruleta" style="margin-right: 215px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-2 text-info">
+                        <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                        <path d="M512 80C512 98.01 497.7 114.6 473.6 128C444.5 144.1 401.2 155.5 351.3 158.9C347.7 157.2 343.9 155.5 340.1 153.9C300.6 137.4 248.2 128 192 128C183.7 128 175.6 128.2 167.5 128.6L166.4 128C142.3 114.6 128 98.01 128 80C128 35.82 213.1 0 320 0C426 0 512 35.82 512 80V80zM160.7 161.1C170.9 160.4 181.3 160 192 160C254.2 160 309.4 172.3 344.5 191.4C369.3 204.9 384 221.7 384 240C384 243.1 383.3 247.9 381.9 251.7C377.3 264.9 364.1 277 346.9 287.3C346.9 287.3 346.9 287.3 346.9 287.3C346.8 287.3 346.6 287.4 346.5 287.5L346.5 287.5C346.2 287.7 345.9 287.8 345.6 288C310.6 307.4 254.8 320 192 320C132.4 320 79.06 308.7 43.84 290.9C41.97 289.9 40.15 288.1 38.39 288C14.28 274.6 0 258 0 240C0 205.2 53.43 175.5 128 164.6C138.5 163 149.4 161.8 160.7 161.1L160.7 161.1zM391.9 186.6C420.2 182.2 446.1 175.2 468.1 166.1C484.4 159.3 499.5 150.9 512 140.6V176C512 195.3 495.5 213.1 468.2 226.9C453.5 234.3 435.8 240.5 415.8 245.3C415.9 243.6 416 241.8 416 240C416 218.1 405.4 200.1 391.9 186.6V186.6zM384 336C384 354 369.7 370.6 345.6 384C343.8 384.1 342 385.9 340.2 386.9C304.9 404.7 251.6 416 192 416C129.2 416 73.42 403.4 38.39 384C14.28 370.6 .0003 354 .0003 336V300.6C12.45 310.9 27.62 319.3 43.93 326.1C83.44 342.6 135.8 352 192 352C248.2 352 300.6 342.6 340.1 326.1C347.9 322.9 355.4 319.2 362.5 315.2C368.6 311.8 374.3 308 379.7 304C381.2 302.9 382.6 301.7 384 300.6L384 336zM416 278.1C434.1 273.1 452.5 268.6 468.1 262.1C484.4 255.3 499.5 246.9 512 236.6V272C512 282.5 507 293 497.1 302.9C480.8 319.2 452.1 332.6 415.8 341.3C415.9 339.6 416 337.8 416 336V278.1zM192 448C248.2 448 300.6 438.6 340.1 422.1C356.4 415.3 371.5 406.9 384 396.6V432C384 476.2 298 512 192 512C85.96 512 .0003 476.2 .0003 432V396.6C12.45 406.9 27.62 415.3 43.93 422.1C83.44 438.6 135.8 448 192 448z"></path>
+                    </svg><span class="d-inline-block d-sm-none d-md-inline-block">rzut monetą</span></a><div class="">
                         <div class="authenticated"style="display:none">
 <span class="info-box-icon"><svg class="bi bi-coin me-2 text-info" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+
     <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"></path>
     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
     <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
@@ -58,7 +60,7 @@
                             <span class="info-box-text">TWÓJ BALANS: </span>
                             <span id="kasa" class="info-box-number">1,410</span>
                         </div>
-</div>
+                    </div>
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
@@ -69,81 +71,83 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                        <div class="me-3">
+                                            <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 12, 2019</span>
+                                            <p>A new monthly report is ready to download!</p>
+                                        </div>
+                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="me-3">
+                                            <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 7, 2019</span>
+                                            <p>$290.29 has been deposited into your account!</p>
+                                        </div>
+                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="me-3">
+                                            <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 2, 2019</span>
+                                            <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                        </div>
+                                    </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                            <div class="bg-success status-indicator"></div>
+                                        </div>
+                                        <div class="fw-bold">
+                                            <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
+                                            <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                        </div>
+                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                            <div class="status-indicator"></div>
+                                        </div>
+                                        <div class="fw-bold">
+                                            <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
+                                            <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
+                                        </div>
+                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                            <div class="bg-warning status-indicator"></div>
+                                        </div>
+                                        <div class="fw-bold">
+                                            <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
+                                            <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
+                                        </div>
+                                    </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                            <div class="bg-success status-indicator"></div>
+                                        </div>
+                                        <div class="fw-bold">
+                                            <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
+                                            <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
+                                        </div>
+                                    </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                     </div>
                                 </div>
                                 <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img id="avatar" class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                <div class="container authenticated"  style="display:none"><div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="user" class="d-none d-lg-inline me-2 text-gray-600 small"></span><img id="avatar" class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
+                                </div>
+                                <div class="container unauthenticated"><button class="button" type="button" data-hover="LOGOWANIE"><a href="/login"><span>ZALOGUJ SIĘ ABY ZAGRAĆ</span></a></button></div>
                             </li>
                         </ul>
                     </div>
@@ -153,35 +157,9 @@
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
-                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
-                                </div>
-                            </div>
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="text-primary fw-bold m-0">Projects</h6>
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="small fw-bold">Server migration<span class="float-end">20%</span></h4>
-                                    <div class="progress progress-sm mb-3">
-                                        <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="visually-hidden">20%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Sales tracking<span class="float-end">40%</span></h4>
-                                    <div class="progress progress-sm mb-3">
-                                        <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="visually-hidden">40%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Customer Database<span class="float-end">60%</span></h4>
-                                    <div class="progress progress-sm mb-3">
-                                        <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="visually-hidden">60%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Payout Details<span class="float-end">80%</span></h4>
-                                    <div class="progress progress-sm mb-3">
-                                        <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"><span class="visually-hidden">80%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Account setup<span class="float-end">Complete!</span></h4>
-                                    <div class="progress progress-sm mb-3">
-                                        <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
-                                    </div>
+                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="" width="160" height="160" />
+                                    <div class="mb-3"><button id="change-avatar-btn" class="btn btn-primary btn-sm" type="button">zmień avatar</button>
+                                        <input id="avatar-input" type="file" name="file" style="display: none;"></div>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +175,7 @@
                                                 </div>
                                                 <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
                                             </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i> 5% since last month</p>
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +189,7 @@
                                                 </div>
                                                 <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
                                             </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i> 5% since last month</p>
                                         </div>
                                     </div>
                                 </div>
@@ -220,49 +198,31 @@
                                 <div class="col">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">User Settings</p>
+                                            <p class="text-primary m-0 fw-bold">ustawienia</p>
                                         </div>
                                         <div class="card-body">
-                                            <form>
+                                            <form id="applysettings">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Username</strong></label><input class="form-control" type="text" id="username" placeholder="user.name" name="username"></div>
+                                                        <div class="mb-3"><label class="form-label" for="username"><strong>nazwa: </strong></label><input id="username" class="form-control" type="text" placeholder="name" name="username" /></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="user@example.com" name="email"></div>
+                                                        <div class="mb-3"><label class="form-label" for="email"><strong>email(tylko do odczytu): </strong></label><input id="email" class="form-control" type="email" placeholder="user@example.com" name="email" disabled/></div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="first_name"><strong>Password</strong></label><input class="form-control" type="text" id="first_name" placeholder="John" name="first_name"></div>
+                                                        <div class="mb-3"><label class="form-label" for="pass"><strong>hasełko: </strong></label><input id="pass" class="form-control" type="password" placeholder="***" name="pass" /></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" placeholder="Doe" name="last_name"></div>
+                                                        <div class="mb-3"><label class="form-label" for="repeat"><strong>powtórz hasełko: </strong></label><input id="repeat" class="form-control" type="password" placeholder="***" name="repeat" /></div>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                                                <div class="mb-3"><button id="savechanges" class="btn btn-primary btn-sm" type="submit">zapisz</button></div>
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">Contact Settings</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <form>
-                                                <div class="mb-3"><label class="form-label" for="address"><strong>Address</strong></label><input class="form-control" type="text" id="address" placeholder="Sunset Blvd, 38" name="address"></div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="city"><strong>City</strong></label><input class="form-control" type="text" id="city" placeholder="Los Angeles" name="city"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="country"><strong>Country</strong></label><input class="form-control" type="text" id="country" placeholder="USA" name="country"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <div class="card shadow"></div>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +254,7 @@
                 $("#user").html('');
                 $(".unauthenticated").show();
                 $(".authenticated").hide();
-                console.log(1)
+
             })
             return true;
         }
@@ -305,9 +265,61 @@
             $(".unauthenticated").hide()
             $(".authenticated").show()
             $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
-            $('#kasa').text(data.balance);
+            $('#kasa').text(data.balance.toFixed(2));
+            $("#username").attr("placeholder", data.name);
+            $("#email").attr("placeholder", data.email);
+            $(".rounded-circle.mb-3.mt-4").attr("src", 'data:image/png;base64,'+data.avatar);
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('.btn.rounded-circle.border-0').click()
+
+        });
+    </script>
+<script>
+    $(document).ready(function() {
+        $('#savechanges').click(function(e) {
+            e.preventDefault();
+            var formdata = $('#applysettings').serialize();
+            $.post('/settings/apply', formdata, function(response) {
+                alert(response);
+                location.reload()
+            });
+        });
+    });
+
+
+    $("#change-avatar-btn").click(function() {
+        $("input[type='file']").click();
+    });
+
+
+    $("input[type='file']").change(function() {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var data = e.target.result;
+
+            $.ajax({
+                url: "/upload-avatar",
+                type: "POST",
+                data: {
+                    avatar: data
+                },
+                success: function(response) {
+                    alert(response);
+                    location.reload()
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+
+</script>
 </body>
 
 </html>

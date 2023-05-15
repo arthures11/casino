@@ -55,18 +55,23 @@ public class WebSocketController {
     }
 
     // handle German chat messages
-    @MessageMapping("/chat/german")
+    @MessageMapping({"/chat/german"})
     @SendTo("/topic/messages/german")
-    public void handleGermanMessage(Message message, Authentication authentication) throws Exception {
-        String username = checkmail(authentication.getName());
+    public Message handleGermanMessage(Message message, Authentication authentication) throws Exception {
+        if(authentication==null){
+            return null;
+        }
+        String username = checkmail(authentication);
         User user = userRepository.findByEmail(username);
         Message chatMessage = new Message();
         chatMessage.setContent(message.getContent());
         chatMessage.setUser(user);
         chatMessage.setChatroom("GER"); // set the language of the message
         chatMessage.setTimestamp(LocalDateTime.now());
-        messageRepository.save(chatMessage);
-        messagingTemplate.convertAndSend("/topic/messages/german", chatMessage); // send the message to the German chat room
+        messageRepository.save(chatMessage);;
+        chatMessage.setAuthor_name(user.name);
+        chatMessage.setAvatar(user.getAvatar());
+        return chatMessage;
     }
 
     public String checkmail(Object authentication){

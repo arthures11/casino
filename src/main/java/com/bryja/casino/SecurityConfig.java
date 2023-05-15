@@ -1,5 +1,10 @@
 package com.bryja.casino;
 
+import com.bryja.casino.classes.Role;
+import com.bryja.casino.classes.User;
+import com.bryja.casino.repository.RoleRepository;
+import com.bryja.casino.repository.UserRepository;
+import com.bryja.casino.services.CustomOAuth2UserService;
 import com.bryja.casino.services.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,30 +13,37 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 
 @Configuration
@@ -39,13 +51,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailsService customerUserDetailsService ;
+    private final CustomOAuth2UserService customOAuth2UserService ;
 
     @Bean
     public PasswordEncoder passwordEncoder()
     { return new BCryptPasswordEncoder(); }
-    @Value("/user/add")
+    @Value("/")
     private String successUrl;
-    @Value("/workdays")
+    @Value("/login")
     private String failureUrl;
 
 
@@ -57,10 +70,10 @@ public class SecurityConfig {
                 //.and()
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui/#/", "/swagger-ui**").hasRole("USER")
+                        .requestMatchers("/dice/**", "/user", "/upload-avatar" ,"/settings/apply", "/admin/**", "/users/{id}", "/user/delete/**", "/bonus/delete/{id}", "/bonuses/addnew", "/bonuses/edit/{id}").hasAnyRole("USER", "MOD")
                         //.requestMatchers("/h2-console/**", "/h2-console/#/", "/h2-console**").hasRole("USER")
-                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**", "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta", "/adminpanelbonuses", "/adminpanelusers", "/bonuses", "/profile", "/register", "/table","/favicon", "/favion/**", "/sock/**", "/chathistory").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**", "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta", "/adminpanelbonuses", "/adminpanelusers", "/bonuses", "/profile", "/register", "/table", "/favicon", "/sock/**", "/chathistory/**", "/usersonline").permitAll()
+                       // .anyRequest().authenticated()
                         .and()
                 )
                 .exceptionHandling(e -> e
@@ -71,7 +84,7 @@ public class SecurityConfig {
                 )
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //and()
-                .oauth2Login()
+                .oauth2Login().userInfoEndpoint().oidcUserService(this.oidcUserService()).and()
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .and()
@@ -97,6 +110,48 @@ public class SecurityConfig {
     }
 
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private final RoleRepository rolerep;
+
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        final OidcUserService delegate = new OidcUserService();
+
+        return (userRequest) -> {
+            OidcUser oidcUser = delegate.loadUser(userRequest);
+            User a = new User(oidcUser.getFullName(), oidcUser.getEmail(), passwordEncoder().encode("123"), 500);
+            a.setRoles(Arrays.asList(rolerep.findByName("ROLE_USER")));
+            if (!emailExists(a.getEmail())) {
+                userRepository.save(a);
+            }
+           // System.out.println(a.getRoles());
+                User user = userRepository.findOptionalByEmail(oidcUser.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found !"));
+                Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+                Collection<Role> rolesCollection = user.getRoles();
+                for (Role element : rolesCollection) {
+                    mappedAuthorities.add(new SimpleGrantedAuthority(element.getName()));
+                }
+                oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+                return oidcUser;
+            } ;
+        }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+
+    private boolean emailExists(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+    @Bean
+    public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(customerUserDetailsService);
+        return authenticationManagerBuilder.build();
+    }
 
     @Bean
     SimpleUrlAuthenticationSuccessHandler successHandler() {

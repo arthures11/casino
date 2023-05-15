@@ -47,7 +47,7 @@
                     <div class="sidebar-brand-text mx-3"><span>kasynko</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+                <ul class="navbar-nav text-light authenticated" id="accordionSidebar" style="display:none">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="/profile"><i class="fas fa-user"></i><span>Profil</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/bonuses"><i class="fas fa-table"></i><span>Bonusy</span></a><a class="nav-link" href="/adminpanelusers"><i class="far fa-smile-wink"></i><span>Admin</span></a></li>
@@ -84,7 +84,7 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
@@ -315,12 +315,10 @@
           <div class="card-header d-flex justify-content-between align-items-center"
             style="border-top: 4px solid #ffa900;">
 <div class="dropdown">
-  <h5 class="mb-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Czat PL</h5>
+    <h5 class="mb-0 dropdown-toggle" id="room-name" data-bs-toggle="dropdown" aria-expanded="false">Czat EN</h5>
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">English</a>
-    <a class="dropdown-item" href="#">German</a>
-    <a class="dropdown-item" href="#">RAGE room</a>
+      <a class="dropdown-item" onclick="chat_en()">German</a>
   </div>
 </div>
             <div class="d-flex flex-row align-items-center">
@@ -621,7 +619,7 @@
             let zaklad = document.getElementById("zaklad").value;
             zaklad = parseInt(zaklad);
             //document.getElementById("kasa").innerHTML = "Twoja kasa: " + kredyt.toFixed(5);
-            $('#kasa').text(kredyt.toFixed(5));
+            $('#kasa').text(kredyt.toFixed(2));
             if (liczby.length > 0) {
                 $('#pot_wygrana').text( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
                 $('#pot_wygrana').val( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
@@ -640,9 +638,12 @@
             $(".unauthenticated").hide()
             $(".authenticated").show()
             $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
-            $('#kasa').text(data.balance);
+            $('#kasa').text(data.balance.toFixed(2));
         });
 
+        $.get("/usersonline", function(data) {
+            $('.badge.bg-warning.me-3').text(data)
+        });
 
         $.get("/chathistory", function(data) {
             console.log(data)
@@ -650,11 +651,11 @@
                 let lastIndex = data[i].timestamp.lastIndexOf(":");
                 data[i].timestamp = data[i].timestamp.substring(0, lastIndex);
                 data[i].timestamp = data[i].timestamp.replace(/T/g, ' ');
-                var obj = `            <div class="d-flex justify-content-between">
+                var obj = `            <div class="room-change d-flex justify-content-between">
               <p class="small mb-1">`+data[i].author_name+`</p>
               <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
             </div>
-            <div class="d-flex flex-row justify-content-start">
+            <div class="room-change d-flex flex-row justify-content-start">
               <img src="`+"data:image/png;base64,"+data[i].avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
@@ -685,6 +686,12 @@
 
     </script>
     <script>
+        $(document).ready(function() {
+            $('.btn.rounded-circle.border-0').click()
+
+        });
+    </script>
+    <script>
         connect();
         async function connect(){
             var socket = new SockJS('/sock');
@@ -697,11 +704,11 @@
                     let lastIndex = oa.timestamp.lastIndexOf(":");
                     oa.timestamp = oa.timestamp.substring(0, lastIndex);
                     oa.timestamp = oa.timestamp.replace(/T/g, ' ');
-                    var obj = `            <div class="d-flex justify-content-between">
+                    var obj = `            <div class="room-change d-flex justify-content-between">
               <p class="small mb-1">`+oa.author_name+`</p>
               <p class="small mb-1 text-muted">`+oa.timestamp+`</p>
             </div>
-            <div class="d-flex flex-row justify-content-start">
+            <div class="room-change d-flex flex-row justify-content-start">
               <img src="`+"data:image/png;base64,"+oa.avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
@@ -724,7 +731,12 @@
                 content: inputField.value
             };
             $('#chati').val('')
-            stompClient.send("/app/chat/english", {}, JSON.stringify({'content': message.content}));
+            if($('#room-name').text().includes("EN")) {
+                stompClient.send("/app/chat/english", {}, JSON.stringify({'content': message.content}));
+            }
+            else{
+                stompClientg.send("/app/chat/german", {}, JSON.stringify({'content': message.content}));
+            }
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
 
@@ -736,6 +748,62 @@
             }
         });
 
+
+        async function chat_en(){
+            $("#room-name").text("Czat GER");
+            $(".room-change").html(null)
+            stompClient.disconnect();
+            var socketg = new SockJS('/sock');
+            stompClientg = Stomp.over(socketg);
+            $.get("/chathistory/germany", function(data) {
+                console.log(data)
+                for(let i=data.length-1;i>=0;i--) {
+                    let lastIndex = data[i].timestamp.lastIndexOf(":");
+                    data[i].timestamp = data[i].timestamp.substring(0, lastIndex);
+                    data[i].timestamp = data[i].timestamp.replace(/T/g, ' ');
+                    var obj = `            <div class="room-change d-flex justify-content-between">
+              <p class="small mb-1">`+data[i].author_name+`</p>
+              <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
+            </div>
+            <div  class="room-change d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+data[i].avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+data[i].content+`</p>
+              </div>
+            </div>`
+                    $('#chatroom').append(obj)
+                }
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            });
+
+            stompClientg.connect({}, function (frame) {
+                //setConnected(true);
+                console.log('Connected: ' + frame);
+                stompClientg.subscribe('/topic/messages/german', function (mess) {
+                    const oa = JSON.parse(mess.body);
+                    let lastIndex = oa.timestamp.lastIndexOf(":");
+                    oa.timestamp = oa.timestamp.substring(0, lastIndex);
+                    oa.timestamp = oa.timestamp.replace(/T/g, ' ');
+                    var obj = `            <div class="room-change d-flex justify-content-between">
+              <p class="small mb-1">`+oa.author_name+`</p>
+              <p class="small mb-1 text-muted">`+oa.timestamp+`</p>
+            </div>
+            <div class="room-change d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+oa.avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+oa.content+`</p>
+              </div>
+            </div>`
+                    $('#chatroom').append(obj)
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                });
+            });
+
+        }
 
     </script>
 </body>

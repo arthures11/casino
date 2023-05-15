@@ -1,6 +1,9 @@
 package com.bryja.casino.services;
 import com.bryja.casino.*;
+import com.bryja.casino.classes.Privilege;
+import com.bryja.casino.classes.Role;
 import com.bryja.casino.classes.User;
+import com.bryja.casino.repository.RoleRepository;
 import com.bryja.casino.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -22,47 +27,47 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findOptionalByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found !"));
-        UserDetails newa = new UserDetails() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
-            }
+        System.out.println("logging in via form");
 
-            @Override
-            public String getPassword() {
-                return user.password;
-            }
 
-            @Override
-            public String getUsername() {
-                return user.email;
-            }
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(), true, true, true,
+                true, getAuthorities(user.getRoles()));
 
-            @Override
-            public boolean isAccountNonExpired() {
-                return true;
-            }
+    }
 
-            @Override
-            public boolean isAccountNonLocked() {
-                return true;
-            }
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Collection<Role> roles) {
 
-            @Override
-            public boolean isCredentialsNonExpired() {
-                return true;
-            }
+        return getGrantedAuthorities(getPrivileges(roles));
+    }
 
-            @Override
-            public boolean isEnabled() {
-                return true;
-            }
-        };
-        return  newa;
+    private List<String> getPrivileges(Collection<Role> roles) {
 
+        List<String> privileges = new ArrayList<>();
+        List<Privilege> collection = new ArrayList<>();
+        for (Role role : roles) {
+            privileges.add(role.getName());
+            collection.addAll(role.getPrivileges());
+        }
+        for (Privilege item : collection) {
+            privileges.add(item.getName());
+        }
+        return privileges;
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
     }
 
 }

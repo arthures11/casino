@@ -45,7 +45,7 @@
                     <div class="sidebar-brand-text mx-3"><span>kasynko</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+                <ul class="navbar-nav text-light authenticated" id="accordionSidebar" style="display:none">
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="/profile"><i class="fas fa-user"></i><span>Profil</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/bonuses"><i class="fas fa-table"></i><span>Bonusy</span></a><a class="nav-link" href="/adminpanelusers"><i class="far fa-smile-wink"></i><span>Admin</span></a></li>
@@ -83,7 +83,7 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1" style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
@@ -111,7 +111,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
@@ -171,14 +171,16 @@
                             <div class="card shadow mb-4"></div><div class="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
   <i class="fas fa-dice me-2 text-info"></i>
   <h4 class="mb-0">KOSTKA</h4>
-</div><div class ="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
+</div>
+
+<div class ="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
 <div class="btn-group btn-group-toggle" data-toggle="buttons">
   <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option1" autocomplete="off" class="radio-button-1"><i class="fa fa-arrow-down me-2 text-info"></i>PONIŻEJ
+    <input type="radio" name="options" value ="under" id="option1" autocomplete="off" class="radio-button-1"><i class="fa fa-arrow-down me-2 text-info">PONIŻEJ</i>
   </label>
         <button id="animate-btn" class="btn btn-primary" type="button">LOSUJ </button>
   <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option2" autocomplete="off" class="radio-button-2"> <i class="fa fa-arrow-up me-2 text-info"></i>POWYŻEJ
+    <input type="radio" name="options" value ="over" id="option2" autocomplete="off" class="radio-button-2"> <i class="fa fa-arrow-up me-2 text-info">POWYŻEJ</i>
   </label>
 </div>
 </div>
@@ -186,19 +188,20 @@
 <div class="form-group row ">
   <label for="input1" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
   <div class="col-sm-8">
-<input type="text" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="123.01">
+<input type="text" id="bet-amount-input" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="123.01">
   </div>
 </div>
 <div class="form-group row">
   <label for="input2" class="text-white col-sm-4 col-form-label text-right">Szansa na wygraną:</label>
   <div class="col-sm-8">
-      <input type="text" placeholder="50.00%" name="chance-input" inputmode="decimal" value="50%">
+      <input type="text" placeholder="50.00%" id="chance-input" name="chance-input" inputmode="decimal" value="50%">
   </div>
 </div>
+
 <div class="form-group row">
   <label for="input3" class="text-white col-sm-4 col-form-label text-right">Potencjalny zysk:</label>
   <div class="col-sm-8">
-    <input type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="555.30" min="0.01" readonly>
+    <input type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="..." min="0.01" readonly>
   </div>
 </div>
 </div><div class="row bg-dark mb-5">
@@ -236,14 +239,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>09/05/2023</td>
-                <td>10</td>
-                <td>50%</td>
-                <td>9999</td>
-                <td>19.80</td>
-            </tr>
+
         </tbody>
     </table>
                         </div>
@@ -257,12 +253,10 @@
           <div class="card-header d-flex justify-content-between align-items-center"
             style="border-top: 4px solid #ffa900;">
 <div class="dropdown">
-  <h5 class="mb-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Czat PL</h5>
+  <h5 class="mb-0 dropdown-toggle" id="room-name" data-bs-toggle="dropdown" aria-expanded="false">Czat EN</h5>
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">English</a>
-    <a class="dropdown-item" href="#">German</a>
-    <a class="dropdown-item" href="#">RAGE room</a>
+    <a class="dropdown-item" onclick="chat_en()">German</a>
   </div>
 </div>
             <div class="d-flex flex-row align-items-center">
@@ -336,29 +330,69 @@
     });
 </script>
 <script>
-    $(document).ready(function() { //animacja jajek
-        // Set initial numbers for the eggs
-        $('#egg1 .number').text(1);
-        $('#egg2 .number').text(2);
-        $('#egg3 .number').text(3);
-        $('#egg4 .number').text(4);
+    $(document).ready(function() {
+        // Bind click event to button
+        $("#animate-btn").click(function() {
+            // Get input values
+            var betAmountInput = $("#bet-amount-input").val();
+            var chanceInput = $("#chance-input").val();
+            var options
+            if($('#option1').prop('checked')){
+                options = $("#option1").val();
+            }
+            else if($('#option2').prop('checked')){
+                options = $("#option2").val();
+            }
 
-        // Animate the eggs on click of the button
-        $('#animate-btn').click(function() {
-            $('.egg').each(function(index) {
-                var egg = $(this);
-                setTimeout(function() {
-                    egg.addClass('animate');
-                    // Change the number inside the egg after the animation is complete
+            // Make POST request
+            $.post("/dice/play", {
+                "bet-amount-input": betAmountInput,
+                "chance-input": chanceInput,
+                "options": options
+            }, function(data) {
+                data = data.padStart(4, "0");
+                var dataArr = data.split("");
+
+                $('.egg').each(function(index) {
+                    var egg = $(this);
                     setTimeout(function() {
-                        var newNumber = Math.floor(Math.random() * 10);
-                        egg.find('.number').text(newNumber);
-                        egg.removeClass('animate');
-                    }, 1000);
-                }, index * 200);
+                        egg.addClass('animate');
+                        // Set the number inside the egg from the data array
+                        setTimeout(function() {
+                            egg.find('.number').text(dataArr[index]);
+                            egg.removeClass('animate');
+                        }, 1000);
+                    }, index * 200);
+                });
+                $.get("/user", function(data) {
+                    if (data.balance > parseFloat($('#kasa').text())) {
+                        // Animate the balance text to blink green
+                        $('#kasa').animate({ color: '#0f0' }, 500, function() {
+
+                        });
+                        $('.egg').css('background-color', '#0f0').delay(1000).queue(function() {
+                        });
+                    } else {
+                        // Animate the balance text to blink red
+                        $('#kasa').animate({ color: '#f00' }, 500, function() {
+
+                        });
+                        $('.egg').css('background-color', '#f00').delay(1000).queue(function() {
+
+                        });
+                    }
+
+
+                    $('#kasa').text(data.balance.toFixed(2));
+                });
             });
         });
     });
+    $('#egg1 .number').text(1);
+    $('#egg2 .number').text(2);
+    $('#egg3 .number').text(3);
+    $('#egg4 .number').text(4);
+
 </script>
 <script type="text/javascript">
     var chatWindow = document.getElementById("chatroom");
@@ -367,7 +401,10 @@
         $(".unauthenticated").hide()
         $(".authenticated").show()
         $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
-        $('#kasa').text(data.balance);
+        $('#kasa').text(data.balance.toFixed(2));
+    });
+    $.get("/usersonline", function(data) {
+        $('.badge.bg-warning.me-3').text(data)
     });
 
     $.get("/chathistory", function(data) {
@@ -376,11 +413,11 @@
             let lastIndex = data[i].timestamp.lastIndexOf(":");
             data[i].timestamp = data[i].timestamp.substring(0, lastIndex);
             data[i].timestamp = data[i].timestamp.replace(/T/g, ' ');
-            var obj = `            <div class="d-flex justify-content-between">
+            var obj = `            <div class="room-change d-flex justify-content-between">
               <p class="small mb-1">`+data[i].author_name+`</p>
               <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
             </div>
-            <div class="d-flex flex-row justify-content-start">
+            <div  class="room-change d-flex flex-row justify-content-start">
               <img src="`+"data:image/png;base64,"+data[i].avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
@@ -393,7 +430,26 @@
 
     });
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('.btn.rounded-circle.border-0').click()
+        $.get('/dice/history', function(data) {
+            $.each(data, function(index, item) {
+                let lastIndex = item.timestamp.lastIndexOf(":");
+                item.timestamp = item.timestamp.substring(0, lastIndex);
+                item.timestamp = item.timestamp.replace(/T/g, ' ');
+                var row = $('<tr>');
+                row.append($('<td>').text(item.id));
+                row.append($('<td>').text(item.timestamp));
+                row.append($('<td>').text(item.bet_amount));
+                row.append($('<td>').text(item.odds));
+                row.append($('<td>').text(item.result));
+                row.append($('<td>').text(item.profit));
+                $('#example tbody').append(row);
+            });
+        });
+    });
+</script>
 <script type="text/javascript">
     var logout = function() {
         $.post("/logout", function() {
@@ -409,7 +465,34 @@
     }
 
 </script>
+<script>
+    $(document).ready(function() {  //win values
 
+        var $betInput = $('#bet-amount-input');
+        var $chanceInput = $('#chance-input');
+        var $profitInput = $('input[name="profit-amount-input"]');
+
+
+        $betInput.add($chanceInput).on('input', function() {
+            var betAmount = parseFloat($betInput.val());
+            var chancePercent = parseFloat($chanceInput.val());
+            if (isNaN(betAmount) || isNaN(chancePercent)) {
+                $profitInput.val(''); //
+
+
+            } else {
+                var chance = chancePercent / 100;
+                var profit = (betAmount / chance) - betAmount;
+                $profitInput.val(profit.toFixed(2));
+                var txt = chancePercent * 100;
+                var belowText = 'PONIŻEJ ' + (txt).toFixed(0);
+                var aboveText = 'POWYŻEJ ' + (10000-txt).toFixed(0);
+                $('#option1 + i').text(belowText);
+                $('#option2 + i').text(aboveText);
+            }
+        });
+    });
+</script>
 <script>
     connect();
     async function connect(){
@@ -423,11 +506,11 @@
                 let lastIndex = oa.timestamp.lastIndexOf(":");
                 oa.timestamp = oa.timestamp.substring(0, lastIndex);
                 oa.timestamp = oa.timestamp.replace(/T/g, ' ');
-                var obj = `            <div class="d-flex justify-content-between">
+                var obj = `            <div class="room-change d-flex justify-content-between">
               <p class="small mb-1">`+oa.author_name+`</p>
               <p class="small mb-1 text-muted">`+oa.timestamp+`</p>
             </div>
-            <div class="d-flex flex-row justify-content-start">
+            <div class="room-change d-flex flex-row justify-content-start">
               <img src="`+"data:image/png;base64,"+oa.avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
@@ -442,6 +525,61 @@
 
     }
 
+    async function chat_en(){
+        $("#room-name").text("Czat GER");
+        $(".room-change").html(null)
+        stompClient.disconnect();
+        var socketg = new SockJS('/sock');
+        stompClientg = Stomp.over(socketg);
+        $.get("/chathistory/germany", function(data) {
+            console.log(data)
+            for(let i=data.length-1;i>=0;i--) {
+                let lastIndex = data[i].timestamp.lastIndexOf(":");
+                data[i].timestamp = data[i].timestamp.substring(0, lastIndex);
+                data[i].timestamp = data[i].timestamp.replace(/T/g, ' ');
+                var obj = `            <div class="room-change d-flex justify-content-between">
+              <p class="small mb-1">`+data[i].author_name+`</p>
+              <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
+            </div>
+            <div  class="room-change d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+data[i].avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+data[i].content+`</p>
+              </div>
+            </div>`
+                $('#chatroom').append(obj)
+            }
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        });
+
+        stompClientg.connect({}, function (frame) {
+            //setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClientg.subscribe('/topic/messages/german', function (mess) {
+                const oa = JSON.parse(mess.body);
+                let lastIndex = oa.timestamp.lastIndexOf(":");
+                oa.timestamp = oa.timestamp.substring(0, lastIndex);
+                oa.timestamp = oa.timestamp.replace(/T/g, ' ');
+                var obj = `            <div class="room-change d-flex justify-content-between">
+              <p class="small mb-1">`+oa.author_name+`</p>
+              <p class="small mb-1 text-muted">`+oa.timestamp+`</p>
+            </div>
+            <div class="room-change d-flex flex-row justify-content-start">
+              <img src="`+"data:image/png;base64,"+oa.avatar+`"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+oa.content+`</p>
+              </div>
+            </div>`
+                $('#chatroom').append(obj)
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            });
+        });
+
+    }
 
     var sendButton = document.getElementById("btnsend");
     sendButton.addEventListener("click", function() {
@@ -450,7 +588,12 @@
             content: inputField.value
         };
         $('#chati').val('')
-        stompClient.send("/app/chat/english", {}, JSON.stringify({'content': message.content}));
+        if($('#room-name').text().includes("EN")) {
+            stompClient.send("/app/chat/english", {}, JSON.stringify({'content': message.content}));
+        }
+        else{
+            stompClientg.send("/app/chat/german", {}, JSON.stringify({'content': message.content}));
+        }
         chatWindow.scrollTop = chatWindow.scrollHeight;
 
 
