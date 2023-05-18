@@ -21,7 +21,8 @@ public class RouletteHistory {
 
     public int result;
 
-    public double profit;
+
+    public String profit;
 
     @ManyToOne(targetEntity=User.class,fetch = FetchType.LAZY)
     @JsonBackReference
@@ -29,17 +30,24 @@ public class RouletteHistory {
     private User user;
 
 
-    public RouletteHistory(Long id, LocalDateTime timestamp, double bet_amount, double odds, int result, double profit, User user) {
-        this.id = id;
-        this.timestamp = timestamp;
-        this.bet_amount = bet_amount;
-        this.odds = odds;
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
         this.result = result;
-        this.profit = profit;
-        this.user = user;
     }
 
     public RouletteHistory() {
+    }
+
+    public RouletteHistory(LocalDateTime timestamp, double bet_amount, double odds, String profit, User user, int result) {
+        this.timestamp = timestamp;
+        this.bet_amount = bet_amount;
+        this.odds = odds;
+        this.profit = profit;
+        this.user = user;
+        this.result = result;
     }
 
     public Long getId() {
@@ -74,19 +82,12 @@ public class RouletteHistory {
         this.odds = odds;
     }
 
-    public int getResult() {
-        return result;
-    }
 
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-    public double getProfit() {
+    public String getProfit() {
         return profit;
     }
 
-    public void setProfit(double profit) {
+    public void setProfit(String profit) {
         this.profit = profit;
     }
 

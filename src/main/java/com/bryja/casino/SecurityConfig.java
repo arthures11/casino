@@ -72,13 +72,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/dice/**", "/user", "/upload-avatar" ,"/settings/apply",
                                 "/users/{id}", "/user/delete/**", "/bonus/delete/{id}", "/bonuses/addnew", "/bonuses/edit/{id}",
-                                "/user/rawadd","/bonuses/history", "/bonuses/claim", "/alerts/removeall").hasAnyRole("USER", "MOD", "ADMIN")
+                                "/user/rawadd","/bonuses/history", "/bonuses/claim", "/alerts/removeall" ,"/roulette/play", "/roulette/history").hasAnyRole("USER", "MOD", "ADMIN")
                         .requestMatchers("/admin/**", "/adminpanelusers", "/adminpanelbonuses").hasRole("ADMIN")
                         //.requestMatchers("/h2-console/**", "/h2-console/#/", "/h2-console**").hasRole("USER")
 
                         .requestMatchers("/index.html", "/error", "/webjars/**", "/githubprivacyerror.html","/css/**","/assets/**", "/images/**",
                                 "/fonts/**", "/scripts/**", "/error", "/login", "/", "/user2", "/user/add", "/ruleta",
-                                "/bonuses", "/profile", "/register", "/table", "/favicon", "/sock/**", "/chathistory/**", "/usersonline").permitAll()
+                                "/bonuses", "/profile", "/register", "/table", "/favicon", "/sock/**", "/chathistory/**", "/usersonline", "/user/profile/{id}").permitAll()
                        // .anyRequest().authenticated()
                         .and()
                 )

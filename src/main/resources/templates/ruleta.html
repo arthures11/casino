@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - Brand</title>
+    <title>Gra - Ruletka</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
@@ -86,7 +86,7 @@
                             </li>
                             <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                    <div style="height: 650px; overflow: auto;" id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">usuń wszystkie</a>
                                     </div>
                                 </div>
@@ -237,25 +237,25 @@
 <div class="form-group row ">
   <label for="input1" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
   <div class="col-sm-8">
-<input id="zaklad" type="text" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="123.01">
+<input id="zaklad" type="text" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="1">
   </div>
 </div>
 <div class="form-group row">
   <label for="input2" class="text-white col-sm-4 col-form-label text-right">Szansa na wygraną:</label>
   <div class="col-sm-8">
-      <input id="szansa" type="text" placeholder="50.00%" name="chance-input" inputmode="decimal" value="50%">
+      <input id="szansa" type="text" placeholder="50.00%" name="chance-input" inputmode="decimal" value="..." readonly>
   </div>
 </div>
 <div class="form-group row">
   <label for="input3" class="text-white col-sm-4 col-form-label text-right">Potencjalny zysk:</label>
   <div class="col-sm-8">
-    <input  id="pot_wygrana" type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="555.30" min="0.01" readonly>
+    <input  id="pot_wygrana" type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="..." min="0.01" readonly>
   </div>
 </div>
 </div><div class="container">
   <div class="row">
     <div class="col-md-6 offset-md-3">
-      <button class="btn btn-primary" id="resultBtn">Kliknij, aby poznać wynik</button>
+      <button class="btn btn-primary" onclick="zagraj_ruleta()" id="resultBtn">Kliknij, aby poznać wynik</button>
       <div class="result-container"></div>
     </div>
   </div>
@@ -268,19 +268,12 @@
                 <th>CZAS</th>
                 <th>POSTAWIONO</th>
                 <th>SZANSA</th>
-                <th>WYLOSOWANO</th>
+                <th>WYNIK</th>
                 <th>PROFIT</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>09/05/2023</td>
-                <td>10</td>
-                <td>50%</td>
-                <td>9999</td>
-                <td>19.80</td>
-            </tr>
+
         </tbody>
     </table>
                         </div>
@@ -303,7 +296,6 @@
             <div class="d-flex flex-row align-items-center">
               <span class="badge bg-warning me-3">20</span>
               <i class="fas fa-minus me-3 text-muted fa-xs"></i>
-              <i class="fas fa-comments me-3 text-muted fa-xs"></i>
               <i class="fas fa-times text-muted fa-xs"></i>
             </div>
           </div>
@@ -361,31 +353,27 @@
     <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="assets/js/theme.js"></script>
-<script>
-    const resultBtn = document.getElementById("resultBtn");
-    const resultContainer = document.querySelector(".result-container");
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Profil usera</h5>
+                </div>
+                <div class="modal-body">
+                    <h3 id="userName"></h3>
+                    <p id="wonGames"></p>
+                    <p id="lostGames"></p>
+                    <p id="wagered"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    resultBtn.addEventListener("click", () => {
-        // Generowanie losowego wyniku
-        const isWin = Math.random() < 0.5;
 
-        // Tworzenie elementu napisu
-        const result = document.createElement("div");
-        result.classList.add("result");
-        result.textContent = isWin ? "WIN" : "LOSE";
-        result.classList.add(isWin ? "win" : "lose");
 
-        // Dodawanie animacji pojawiania się wyniku
-        setTimeout(() => {
-            result.style.opacity = 1;
-        }, 10);
-        if (resultContainer.firstChild) {
-            resultContainer.removeChild(resultContainer.firstChild)
-        }
-
-        resultContainer.appendChild(result);
-    });
-</script>
     <script>
         var executing = false;
         const wheel = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32];
@@ -396,11 +384,16 @@
         var rundy_lose = 0;
         const input = document.querySelector('input');
         const log = document.getElementById('wartosc_zakladu');
+        $(document).ready(function() {
+            // Listen for changes in the #zaklad input field
+            $('#zaklad').on('input', function() {
+                var ile = (document.getElementById("zaklad").value * (36 / liczby.length) - document.getElementById("zaklad").value);
+                $('#pot_wygrana').text( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
+                $('#pot_wygrana').val( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
+            });
+        });
         input.addEventListener('input', updateValue);
         function updateValue(e) {
-           // document.getElementById("kasa").innerHTML = "Twoja kasa: " + kredyt.toFixed(5);
-            $('#kasa').text(kredyt.toFixed(5));
-            log.textContent = "Wartosc zakladu: " + e.target.value;
             if (liczby.length > 0) {
                 var ile = (document.getElementById("zaklad").value * (36 / liczby.length) - document.getElementById("zaklad").value);
                 $('#pot_wygrana').text( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
@@ -413,7 +406,7 @@
         }
         var kredyt = 1000;
        // document.getElementById("kasa").innerHTML = "Twoja kasa: " + kredyt;
-        $('#kasa').text(kredyt.toFixed(5));
+
         const liczby = [];
 
         const dudy = createArray(12, 3);
@@ -502,7 +495,6 @@
             document.getElementsByClassName("x" + name)[0].style.backgroundColor = "lightblue";
             document.getElementsByClassName("x" + name)[0].style.color = "black";
             liczby.push(name);
-            console.log(liczby);
             update_table();
         }
         async function graj() {
@@ -552,13 +544,12 @@
             liczba = wheel[liczba];
             rundy++;
 
-            console.log("wylosowana liczba to: " + liczba)
+
             if (liczby.length == 0) { alert("nie buguj"); executing = false; return; }
             for (let i = 0; i < liczby.length; i++) {
                 if (liczby[i] == liczba) {
-                    console.log("WIN");
+
                     kredyt += (document.getElementById("zaklad").value * (36 / liczby.length) - document.getElementById("zaklad").value);
-                    console.log("kasa: " + kredyt + "\n\n");
                     update_table();
                     document.getElementById("liczba").innerHTML = "wylosowana liczba: " + liczba;
                     document.getElementById("win_lose").innerHTML = "Wygrałeś " + (document.getElementById("zaklad").value * (36 / liczby.length) - document.getElementById("zaklad").value).toFixed(5);
@@ -568,7 +559,7 @@
                     return;
                 }
             }
-            console.log("LOSE");
+
             rundy_lose++;
             document.getElementById("win_lose").innerHTML = "Przegrałeś " + document.getElementById("zaklad").value;
             document.getElementById("liczba").innerHTML = "wylosowana liczba: " + liczba;
@@ -580,7 +571,7 @@
                     rundy_win + "\nilosc przegranych rund: " + rundy_lose);
             }
             executing = false;
-            console.log("kasa: " + kredyt + "\n\n");
+
         }
         function createArray(length) {
             var arr = new Array(length || 0),
@@ -598,7 +589,7 @@
             let zaklad = document.getElementById("zaklad").value;
             zaklad = parseInt(zaklad);
             //document.getElementById("kasa").innerHTML = "Twoja kasa: " + kredyt.toFixed(5);
-            $('#kasa').text(kredyt.toFixed(2));
+
             if (liczby.length > 0) {
                 $('#pot_wygrana').text( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
                 $('#pot_wygrana').val( + ile.toFixed(2) + " \n(x" + ((ile / document.getElementById("zaklad").value) + 1).toFixed(2) + ")");
@@ -607,7 +598,16 @@
             }
         }
 
+        function getprofile(id) {
+            $.get('/user/profile/' + id, function(data) {
+                $('#userName').text(data.name);
+                $('#wonGames').text('Wygrał gier: ' + data.won_games);
+                $('#lostGames').text('Przegrał gier: ' + data.lost_games);
+                $('#wagered').text('Postawiono w sumie: ' + data.wagered);
 
+                $('#profileModal').modal('show');
+            });
+        }
     </script>
     <script type="text/javascript">
         function deleteAlerts(){
@@ -616,11 +616,11 @@
                 url: "/alerts/removeall",
                 type: "DELETE",
                 success: function() {
-                    console.log("BONUS deleted successfully");
+
                     location.reload()
                 },
                 error: function() {
-                    console.log("Error deleting user");
+
                 }
             });
 
@@ -633,7 +633,7 @@
             $(".authenticated").show()
             $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
             $('#kasa').text(data.balance.toFixed(2));
-                for(let i=0;i<data.notyfikacje.length;i++){
+                for(let i=data.notyfikacje.length-1;i>=0;i--){
                     var t = `<a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
@@ -663,7 +663,7 @@
               <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
             </div>
             <div class="room-change d-flex flex-row justify-content-start">
-              <img src="`+"data:image/png;base64,"+data[i].avatar+`"
+              <img onclick=getprofile("`+data[i].userid+`") src="`+"data:image/png;base64,"+data[i].avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
                 <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+data[i].content+`</p>
@@ -727,6 +727,60 @@
 
                 });
             });
+
+        }
+
+        function zagraj_ruleta(){
+            $.ajax({
+                url: "/roulette/play",
+                type: "POST",
+                data: JSON.stringify({
+                    "nums": liczby,
+                    "zaklad": $('#zaklad').val()
+                }),
+                contentType: "application/json",
+                success: function(data) {
+
+                    const resultContainer = document.querySelector(".result-container");
+                    const result = document.createElement("div");
+                    result.classList.add("result");
+                    if(data.includes('WIN')){
+                        result.textContent = "WIN";
+                        result.classList.add("win");
+                    }
+                    else{
+                        result.textContent ="LOSE";
+                        result.classList.add("lose");
+                    }
+
+                    setTimeout(() => {
+                        result.style.opacity = 1;
+                    }, 10);
+                    if (resultContainer.firstChild) {
+                        resultContainer.removeChild(resultContainer.firstChild)
+                    }
+
+                    resultContainer.appendChild(result);
+                    $.get("/user", function(data) {
+                        if (data.balance > parseFloat($('#kasa').text())) {
+
+                            $('#kasa').animate({ color: '#0f0' }, 500, function() {
+
+                            });
+                        } else {
+                            $('#kasa').animate({ color: '#f00' }, 500, function() {
+                            });
+                        }
+                        $('#kasa').text(data.balance.toFixed(2));
+                    });
+
+                },
+                error: function(xhr, status, error) {
+
+                }
+            });
+
+
 
         }
 
@@ -812,6 +866,25 @@
 
         }
 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $.get('/roulette/history', function(data) {
+                $.each(data, function(index, item) {
+                    let lastIndex = item.timestamp.lastIndexOf(":");
+                    item.timestamp = item.timestamp.substring(0, lastIndex);
+                    item.timestamp = item.timestamp.replace(/T/g, ' ');
+                    var row = $('<tr>');
+                    row.append($('<td>').text(item.id));
+                    row.append($('<td>').text(item.timestamp));
+                    row.append($('<td>').text(item.bet_amount));
+                    row.append($('<td>').text(item.odds));
+                    row.append($('<td>').text(item.result));
+                    row.append($('<td>').text(item.profit));
+                    $('#example tbody').append(row);
+                });
+            });
+        });
     </script>
 </body>
 

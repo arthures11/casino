@@ -30,6 +30,8 @@ public class Message {
     @Nullable
     private byte[] avr;
 
+    @Transient
+    private Long userid;
     public Message() {
     }
 
@@ -43,6 +45,22 @@ public class Message {
 
     public byte[] getAvatar() {
         return avr;
+    }
+
+    public byte[] getAvr() {
+        return avr;
+    }
+
+    public void setAvr(byte[] avr) {
+        this.avr = avr;
+    }
+
+    public Long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Long userid) {
+        this.userid = userid;
     }
 
     public void setAvatar(byte[] avatar) {

@@ -96,7 +96,7 @@ public class SetupDataLoader implements
 
         Bonuses bonus = bonusesRepository.findByName(name);
         if (bonus == null) {
-            bonus = new Bonuses(name, amount, hours);
+            bonus = new Bonuses(name, amount, hours, hours);
             bonusesRepository.save(bonus);
         }
         return bonus;

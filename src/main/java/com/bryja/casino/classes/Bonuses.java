@@ -1,6 +1,9 @@
 package com.bryja.casino.classes;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+
+import javax.validation.constraints.Null;
 
 @Entity
 public class Bonuses {
@@ -13,12 +16,23 @@ public class Bonuses {
 
     int every_hours;
 
+    int left_hours;
 
 
-    public Bonuses(String name, double amount, int every_hours) {
+
+    public Bonuses(String name, double amount, int every_hours, int left_hours) {
         this.name = name;
         this.amount = amount;
         this.every_hours = every_hours;
+        this.left_hours = left_hours;
+    }
+
+    public int getLeft_hours() {
+        return left_hours;
+    }
+
+    public void setLeft_hours(int left_hours) {
+        this.left_hours = left_hours;
     }
 
     public double getAmount() {

@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronTrigger;
+
+
+import java.time.Duration;
 
 import java.util.List;
+
 
 @Configuration
 @EnableScheduling
 public class ScheduledTasks {
-
-    // Autowire user service
     @Autowired
     private TaskScheduler taskScheduler;
 
@@ -26,32 +26,31 @@ public class ScheduledTasks {
     @Autowired
     private BonusesRepository bonusRepository;
 
+    public int abc = 0;
     @PostConstruct
     public void scheduleTasks() {
+        taskScheduler.scheduleAtFixedRate(this::updateScheduledTasks, Duration.ofMinutes(60));
+    }
+    private void updateScheduledTasks() {
+        if(abc==0){
+            abc++;
+            return;
+        }
         List<Bonuses> bonuses = bonusRepository.findAll();
         for (Bonuses bonus : bonuses) {
-            int hours = bonus.getEvery_hours();
+            bonus.setLeft_hours(bonus.getLeft_hours()-1);
+            if(bonus.getLeft_hours()==0){
+                bonus.setLeft_hours(bonus.getEvery_hours());
+            }
+            else{
+                bonusRepository.save(bonus);
+                continue;
+            }
+            bonusRepository.save(bonus);
             double toadd = bonus.getAmount();
             String type = bonus.getName();
-            String cronExpression = "0 0 */" + hours + " * * *";
-
-            taskScheduler.schedule(new UpdateBalancesTask(toadd, type), new CronTrigger(cronExpression));
-        }
-    }
-
-    private class UpdateBalancesTask implements Runnable {
-        private double toadd;
-
-        private String type;
-
-        public UpdateBalancesTask(double toadd, String type) {
-            this.toadd = toadd;
-            this.type = type;
-        }
-
-        @Override
-        public void run() {
             userController.updateBalanceForAllUsers(toadd, type);
         }
     }
+
 }

@@ -34,6 +34,7 @@ public class UserController {
     private final RoleRepository rolerep;
 
     private final DiceHistoryRepository diceHistoryRepository;
+    private final RouletteHistoryRepository rouletteHistoryRepository;
 
     private final BonusHistoryRepository bonusHistoryRepository;
     private final BonusesRepository bonusesRepository;
@@ -43,10 +44,11 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, BonusHistoryRepository bonusHistoryRepository, BonusesRepository bonusesRepository, NotificationRepository notificationRepository, MessageRepository messageRepository) {
+    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, RouletteHistoryRepository rouletteHistoryRepository, BonusHistoryRepository bonusHistoryRepository, BonusesRepository bonusesRepository, NotificationRepository notificationRepository, MessageRepository messageRepository) {
         this.repository = repository;
         this.rolerep = rolerep;
         this.diceHistoryRepository = diceHistoryRepository;
+        this.rouletteHistoryRepository = rouletteHistoryRepository;
         this.bonusHistoryRepository = bonusHistoryRepository;
         this.bonusesRepository = bonusesRepository;
         this.notificationRepository = notificationRepository;
@@ -62,10 +64,10 @@ public class UserController {
             ///  throw new EmailNullException(n, req, resp);
         }
         User a = new User(n,n2,passwordEncoder.encode("123"), 500);
-        a.setRoles(Arrays.asList(rolerep.findByName("ROLE_USER")));
+        a.setRoles(Arrays.asList(rolerep.findByName("ROLE_ADMIN")));
         if (emailExists(a.getEmail())) {
             try {
-                Role role = rolerep.findByName("ROLE_USER");
+                Role role = rolerep.findByName("ROLE_ADMIN");
                 // String token = generateToken(n2,Collections.singletonList(role.getName()));
                 // return new ResponseEntity<>(new BearerToken(token , "Bearer "), HttpStatus.OK);
                 resp.sendRedirect(req.getContextPath()+"/");
@@ -75,7 +77,7 @@ public class UserController {
         }
         else{
             repository.save(a);
-            Role role = rolerep.findByName("ROLE_USER");
+            Role role = rolerep.findByName("ROLE_ADMIN");
             //String token = generateToken(n2,Collections.singletonList(role.getName()));
             //model.addAttribute("attribute", "forwardWithForwardPrefix");
             //  return new ResponseEntity<>(new BearerToken(token , "Bearer "), HttpStatus.OK);
@@ -148,9 +150,16 @@ public class UserController {
 
         return usr;
     }
+    @GetMapping(value="/user/profile/{id}", consumes = {"*/*"})
+    public User getProfile(@PathVariable Long id) {
+
+        Optional<User> usr = repository.findById(id);
+        User to_return = new User(usr.get().getName(), usr.get().getWon_games(), usr.get().getLost_games(), usr.get().getWagered());
+        return to_return;
+    }
 
     @PostMapping(value="/dice/play", consumes = {"*/*"})
-    public ResponseEntity<String> diceHistory(Authentication authentication,
+    public ResponseEntity<String> playDice(Authentication authentication,
                                               @RequestParam("bet-amount-input") String betAmountInput,
                                               @RequestParam("chance-input") String chanceInput,
                                               @RequestParam("options") String options) {
@@ -172,13 +181,16 @@ public class UserController {
         num = num *100;
         double profit = (bet / chance) - bet;  //20 - 10
         String formattedValue = String.format("%.2f", profit);
+        usr.wagered+=(int)bet;
 
         if(options.equals("under")){
             if(num > randomNumber){
                 usr.balance+= profit;
+                usr.won_games+=1;
                 usr.getDice_history().add(new DiceHistory(LocalDateTime.now(),bet, chanceInput, randomNumber, "+"+formattedValue, usr));
             }
             else{
+                usr.lost_games+=1;
                 usr.balance-= bet;
                 usr.getDice_history().add(new DiceHistory(LocalDateTime.now(),bet, chanceInput, randomNumber, "-"+bet, usr));
             }
@@ -187,9 +199,11 @@ public class UserController {
             num = 10000-num;
             if(num < randomNumber){
                 usr.balance+= profit;
+                usr.won_games+=1;
                 usr.getDice_history().add(new DiceHistory(LocalDateTime.now(),bet, chanceInput, randomNumber, "+"+formattedValue, usr));
             }
             else{
+                usr.lost_games+=1;
                 usr.balance-= bet;
                 usr.getDice_history().add(new DiceHistory(LocalDateTime.now(),bet, chanceInput, randomNumber, "-"+bet, usr));
             }
@@ -202,12 +216,57 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(randomNumber));
         //return String.valueOf(randomNumber);
     }
+    @PostMapping(value="/roulette/play", consumes = {"*/*"})
+    public ResponseEntity<String> playRoulette(Authentication authentication,
+                                               @RequestBody Map<String, Object> request
+                                              ) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+        List<Integer> nums = (List<Integer>) request.get("nums");
+        if(nums.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.valueOf("brak salda lub nie podano numerow"));
+        }
+
+        String zak = (String) request.get("zaklad");
+        int zaklad = Integer.parseInt(zak);
+        if(nums==null || zaklad<=0 ||zaklad> usr.getBalance()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.valueOf("brak salda lub nie podano numerow"));
+        }
+        double payout = 36.0 / nums.size();
+        double odds = (nums.size() / 36.0) * 100;
+        double bet = (double)zaklad;
+        Random random = new Random();
+        Integer randomNumber = random.nextInt(36) + 1;
+        usr.wagered+=(int)bet;
+        if(nums.contains(randomNumber)){
+            usr.won_games+=1;
+            usr.balance+= (bet*payout-bet);
+            usr.getRoulette_history().add(new RouletteHistory(LocalDateTime.now(),bet, odds, "+"+(bet*payout), usr, randomNumber));
+            repository.save(usr);
+            return ResponseEntity.status(HttpStatus.OK).body(String.valueOf("WIN"));
+        }
+        else{
+            usr.lost_games+=1;
+            usr.balance-=bet;
+            usr.getRoulette_history().add(new RouletteHistory(LocalDateTime.now(),bet, odds, "-"+(bet), usr, randomNumber));
+            repository.save(usr);
+            return ResponseEntity.status(HttpStatus.OK).body(String.valueOf("LOSE"));
+        }
+        //return String.valueOf(randomNumber);
+    }
 
     @GetMapping(value="/dice/history", consumes = {"*/*"})
     public List<DiceHistory> getDiceHistory(Authentication authentication) {
         User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
 
         List<DiceHistory> msgs = diceHistoryRepository.findFirst20ByUserIdOrderByIdDesc(usr.getId());
+
+        return msgs;
+    }
+    @GetMapping(value="/roulette/history", consumes = {"*/*"})
+    public List<RouletteHistory> getRouletteHistory(Authentication authentication) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+
+        List<RouletteHistory> msgs = rouletteHistoryRepository.findFirst20ByUserIdOrderByIdDesc(usr.getId());
 
         return msgs;
     }
@@ -235,7 +294,7 @@ public class UserController {
     public String addNewBonus(Authentication authentication, @RequestBody Bonuses bns) {
 
 
-        Bonuses newbn = new Bonuses(bns.getName(),bns.getAmount(),bns.getEvery_hours());
+        Bonuses newbn = new Bonuses(bns.getName(),bns.getAmount(),bns.getEvery_hours(), bns.getEvery_hours());
 
         bonusesRepository.save(newbn);
 
@@ -406,6 +465,7 @@ public class UserController {
             Optional<User> g = repository.findById(msgs.get(i).getUser().getId());
             msgs.get(i).setAvatar(g.get().getAvatar());
             msgs.get(i).setAuthor_name(g.get().getName());
+            msgs.get(i).setUserid(g.get().getId());
         }
          return msgs;
     }
@@ -470,8 +530,8 @@ public class UserController {
     public void updateBalanceForAllUsers(double balanceToAdd, String type) {
         List<User> users = repository.findAll();
         for (User user : users) {
-            user.setBonuses(user.getBonuses() + balanceToAdd);
 
+            user.setBonuses(user.getBonuses() + balanceToAdd);
             List<Notification> a = user.getNotyfikacje();
             a.add(new Notification("nowy bonus został dodany: "+type+" +"+balanceToAdd+"żetonów", new Date(),user));
             user.setNotyfikacje(a);

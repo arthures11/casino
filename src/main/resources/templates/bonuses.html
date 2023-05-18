@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - Brand</title>
+    <title>Bonusy</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
@@ -73,7 +73,7 @@
                             </li>
                             <li class="authenticated nav-item dropdown no-arrow mx-1"style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                    <div style="height: 650px; overflow: auto;" id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">usuń wszystkie</a>
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@
              $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
              $('#kasa').text(data.balance.toFixed(2))
              $('#bonusToClaim').text(data.bonuses);
-             for(let i=0;i<data.notyfikacje.length;i++){
+             for(let i=data.notyfikacje.length-1;i>=0;i--){
                  var t = `<a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>

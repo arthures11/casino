@@ -32,6 +32,11 @@ import java.util.List;
 
         public double bonuses;
 
+        public int won_games=0;
+        public int lost_games=0;
+        public int wagered=0;
+
+
 
     @Transient
         public String chip;
@@ -48,6 +53,37 @@ import java.util.List;
         @JsonIgnore
         public Collection<Role> roles;
 
+    public User(String name, int won_games, int lost_games, int wagered) {
+        this.name = name;
+        this.won_games = won_games;
+        this.lost_games = lost_games;
+        this.wagered = wagered;
+    }
+
+    public int getWon_games() {
+        return won_games;
+    }
+
+    public void setWon_games(int won_games) {
+        this.won_games = won_games;
+    }
+
+    public int getLost_games() {
+        return lost_games;
+    }
+
+    public void setLost_games(int lost_games) {
+        this.lost_games = lost_games;
+    }
+
+    public int getWagered() {
+        return wagered;
+    }
+
+    public void setWagered(int wagered) {
+        this.wagered = wagered;
+    }
+
     public List<BonusHistory> getBonus_history() {
         return bonus_history;
     }
@@ -63,6 +99,10 @@ import java.util.List;
     @OneToMany(targetEntity=BonusHistory.class,cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, mappedBy = "user")
     private List<BonusHistory> bonus_history = new ArrayList<BonusHistory>();
+
+    @OneToMany(targetEntity=RouletteHistory.class,cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, mappedBy = "user")
+    private List<RouletteHistory> roulette_history = new ArrayList<RouletteHistory>();
 
         @OneToMany(targetEntity=Notification.class,cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY, mappedBy = "user")
@@ -83,6 +123,14 @@ import java.util.List;
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public List<RouletteHistory> getRoulette_history() {
+        return roulette_history;
+    }
+
+    public void setRoulette_history(List<RouletteHistory> roulette_history) {
+        this.roulette_history = roulette_history;
     }
 
     public List<DiceHistory> getDice_history() {

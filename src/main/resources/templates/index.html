@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - Brand</title>
+    <title>Home - Kostka</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
@@ -85,7 +85,7 @@
                             </li>
                             <li class="authenticated nav-item dropdown no-arrow mx-1" style="display:none">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                    <div style="height: 650px; overflow: auto;" id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">usuń wszystkie</a>
                                     </div>
                                 </div>
@@ -167,7 +167,7 @@
 <div class="form-group row ">
   <label for="input1" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
   <div class="col-sm-8">
-<input type="text" id="bet-amount-input" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="123.01">
+<input type="text" id="bet-amount-input" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="">
   </div>
 </div>
 <div class="form-group row">
@@ -241,7 +241,6 @@
             <div class="d-flex flex-row align-items-center">
               <span class="badge bg-warning me-3">20</span>
               <i class="fas fa-minus me-3 text-muted fa-xs"></i>
-              <i class="fas fa-comments me-3 text-muted fa-xs"></i>
               <i class="fas fa-times text-muted fa-xs"></i>
             </div>
           </div>
@@ -297,8 +296,44 @@
     <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters-2.js"></script>
     <script src="assets/js/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.js"></script>
     <script src="assets/js/theme.js"></script>
+
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Profil usera</h5>
+                </div>
+                <div class="modal-body">
+                    <h3 id="userName"></h3>
+                    <p id="wonGames"></p>
+                    <p id="lostGames"></p>
+                    <p id="wagered"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
 <script>
+    function getprofile(id) {
+        $.get('/user/profile/' + id, function(data) {
+            $('#userName').text(data.name);
+            $('#wonGames').text('Wygrał gier: ' + data.won_games);
+            $('#lostGames').text('Przegrał gier: ' + data.lost_games);
+            $('#wagered').text('Postawiono w sumie: ' + data.wagered);
+
+            $('#profileModal').modal('show');
+        });
+    }
+
+</script>
+
+<script>
+
     $(document).ready(function() {
         $('input[type="radio"]').on('change', function() {
             $('label').removeClass('active');
@@ -399,7 +434,7 @@
         $(".authenticated").show()
         $("#avatar").attr("src", 'data:image/png;base64,'+data.avatar);
         $('#kasa').text(data.balance.toFixed(2));
-        for(let i=0;i<data.notyfikacje.length;i++){
+        for(let i=data.notyfikacje.length-1;i>=0;i--){
             var t = `<a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
@@ -428,7 +463,7 @@
               <p class="small mb-1 text-muted">`+data[i].timestamp+`</p>
             </div>
             <div  class="room-change d-flex flex-row justify-content-start">
-              <img src="`+"data:image/png;base64,"+data[i].avatar+`"
+              <img onclick=getprofile("`+data[i].userid+`") src="`+"data:image/png;base64,"+data[i].avatar+`"
                 alt="avatar 1" style="width: 45px; height: 100%;">
               <div>
                 <p id ="chatmsg" class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">`+data[i].content+`</p>
