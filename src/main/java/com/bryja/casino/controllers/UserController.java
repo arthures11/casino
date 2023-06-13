@@ -39,12 +39,13 @@ public class UserController {
     private final BonusHistoryRepository bonusHistoryRepository;
     private final BonusesRepository bonusesRepository;
     private final NotificationRepository notificationRepository;
+    private final CoinflipHistoryRepository coinflipHistoryRepository;
 
     private final MessageRepository messageRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, RouletteHistoryRepository rouletteHistoryRepository, BonusHistoryRepository bonusHistoryRepository, BonusesRepository bonusesRepository, NotificationRepository notificationRepository, MessageRepository messageRepository) {
+    public UserController(UserRepository repository, RoleRepository rolerep, DiceHistoryRepository diceHistoryRepository, RouletteHistoryRepository rouletteHistoryRepository, BonusHistoryRepository bonusHistoryRepository, BonusesRepository bonusesRepository, NotificationRepository notificationRepository, CoinflipHistoryRepository coinflipHistoryRepository, MessageRepository messageRepository) {
         this.repository = repository;
         this.rolerep = rolerep;
         this.diceHistoryRepository = diceHistoryRepository;
@@ -52,6 +53,7 @@ public class UserController {
         this.bonusHistoryRepository = bonusHistoryRepository;
         this.bonusesRepository = bonusesRepository;
         this.notificationRepository = notificationRepository;
+        this.coinflipHistoryRepository = coinflipHistoryRepository;
         this.messageRepository = messageRepository;
     }
 
@@ -157,6 +159,67 @@ public class UserController {
         User to_return = new User(usr.get().getName(), usr.get().getWon_games(), usr.get().getLost_games(), usr.get().getWagered());
         return to_return;
     }
+
+
+    @GetMapping(value="/coinflip/history", consumes = {"*/*"})
+    public List<CoinflipHistory> getCoinflipHistory(Authentication authentication) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+
+        List<CoinflipHistory> msgs = coinflipHistoryRepository.findFirst20ByUserIdOrderByIdDesc(usr.getId());
+
+        return msgs;
+    }
+
+    @PostMapping(value="/coinflip/play", consumes = {"*/*"})
+    public ResponseEntity<String> playCoinflip(Authentication authentication,
+                                               @RequestParam("bet-amount-input") String betAmountInput,
+                                               @RequestParam("chance") String chance,
+                                               @RequestParam("options") String options) {
+        User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
+        double bet = Double.parseDouble(betAmountInput);
+        double random = Double.parseDouble(chance);
+        String option = options.toString();
+        if(bet<0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong bet amount");
+        }
+        double profit = bet;
+        usr.wagered+=(int)bet;
+        String formattedValue = String.format("%.2f", profit);
+        if(option.equals("RED")){
+            if(random <= 0.5){
+                usr.balance+= profit;
+                usr.won_games+=1;
+                usr.getCoinflip_history().add(new CoinflipHistory(LocalDateTime.now(),bet, "wygrana", "+"+bet, usr));
+            }
+            else
+            {
+                usr.lost_games+=1;
+                usr.balance-= bet;
+                usr.getCoinflip_history().add(new CoinflipHistory(LocalDateTime.now(),bet, "przegrana", "-"+bet, usr));
+            }
+        }
+        else if(option.equals("BLACK")){
+            if(random > 0.5){
+                usr.balance+= profit;
+                usr.won_games+=1;
+                usr.getCoinflip_history().add(new CoinflipHistory(LocalDateTime.now(),bet, "wygrana", "+"+bet, usr));
+            }
+            else
+            {
+                usr.lost_games+=1;
+                usr.balance-= bet;
+                usr.getCoinflip_history().add(new CoinflipHistory(LocalDateTime.now(),bet, "przegrana", "-"+bet, usr));
+            }
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong red/black settings");
+        }
+        repository.save(usr);
+
+        return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(200));
+    }
+
+
 
     @PostMapping(value="/dice/play", consumes = {"*/*"})
     public ResponseEntity<String> playDice(Authentication authentication,

@@ -40,6 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getEmail(), user.getPassword(), true, true, true,
                 true, getAuthorities(user.getRoles()));
 
+
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(

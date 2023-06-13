@@ -17,29 +17,47 @@ public class CoinflipHistory {
 
     public double bet_amount;
 
-    public double odds;
+    public String result;
 
-    public int result;
+    public String checked;
 
-    public double profit;
+    public String profit;
 
     @ManyToOne(targetEntity=User.class,fetch = FetchType.LAZY)
     @JsonBackReference
     @JsonIgnore
     private User user;
 
-
-    public CoinflipHistory(Long id, LocalDateTime timestamp, double bet_amount, double odds, int result, double profit, User user) {
+    public CoinflipHistory(Long id, LocalDateTime timestamp, double bet_amount, String checked, String result, String profit, User user) {
         this.id = id;
         this.timestamp = timestamp;
         this.bet_amount = bet_amount;
-        this.odds = odds;
+        this.checked = checked;
+        this.result = result;
+        this.profit = profit;
+        this.user = user;
+    }
+    public CoinflipHistory(LocalDateTime timestamp, double bet_amount, String result, String profit, User user) {
+        this.timestamp = timestamp;
+        this.bet_amount = bet_amount;
         this.result = result;
         this.profit = profit;
         this.user = user;
     }
 
     public CoinflipHistory() {
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
     }
 
     public Long getId() {
@@ -66,27 +84,15 @@ public class CoinflipHistory {
         this.bet_amount = bet_amount;
     }
 
-    public double getOdds() {
-        return odds;
-    }
-
-    public void setOdds(double odds) {
-        this.odds = odds;
-    }
-
-    public int getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-    public double getProfit() {
+    public String getProfit() {
         return profit;
     }
 
-    public void setProfit(double profit) {
+    public void setProfit(String profit) {
         this.profit = profit;
     }
 

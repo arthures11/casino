@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Kostka</title>
+    <title>Home - COINFLIP</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
@@ -34,7 +34,72 @@
             background-color: red;
             margin-top: 3px;
         }
-    </style>
+
+h1{
+  text-align: center;
+}
+#coin {
+ margin-left: 500px;
+ margin-top: 50px;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+#coin div {
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 50%;
+     -moz-border-radius: 50%;
+          border-radius: 50%;
+  -webkit-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+     -moz-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+          box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+}
+.side-a {
+  background-color: #bb0000;
+}
+.side-b {
+  background-color: #3e3e3e;
+}
+
+#coin {
+  transition: -webkit-transform 1s ease-in;
+  -webkit-transform-style: preserve-3d;
+}
+#coin div {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+}
+.side-a {
+  z-index: 100;
+}
+.side-b {
+  -webkit-transform: rotateY(-180deg);
+
+}
+
+#coin.heads {
+  -webkit-animation: flipHeads 3s ease-out forwards;
+  -moz-animation: flipHeads 3s ease-out forwards;
+    -o-animation: flipHeads 3s ease-out forwards;
+       animation: flipHeads 3s ease-out forwards;
+}
+#coin.tails {
+  -webkit-animation: flipTails 3s ease-out forwards;
+  -moz-animation: flipTails 3s ease-out forwards;
+    -o-animation: flipTails 3s ease-out forwards;
+       animation: flipTails 3s ease-out forwards;
+}
+
+@-webkit-keyframes flipHeads {
+  from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
+  to { -webkit-transform: rotateY(1800deg); -moz-transform: rotateY(1800deg); transform: rotateY(1800deg); }
+}
+@-webkit-keyframes flipTails {
+  from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
+  to { -webkit-transform: rotateY(1980deg); -moz-transform: rotateY(1980deg); transform: rotateY(1980deg); }
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -58,10 +123,10 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a href="/#"  style="margin-right: 15px;"><i class="fas fa-dice me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block nav-linky active">kostka</span></a><a href="/ruleta" style="margin-right: 15px;"><i class="fa fa-gamepad me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">ruletka</span></a><a href="/coinflip" style="margin-right: 215px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-2 text-info">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
-                                <path d="M512 80C512 98.01 497.7 114.6 473.6 128C444.5 144.1 401.2 155.5 351.3 158.9C347.7 157.2 343.9 155.5 340.1 153.9C300.6 137.4 248.2 128 192 128C183.7 128 175.6 128.2 167.5 128.6L166.4 128C142.3 114.6 128 98.01 128 80C128 35.82 213.1 0 320 0C426 0 512 35.82 512 80V80zM160.7 161.1C170.9 160.4 181.3 160 192 160C254.2 160 309.4 172.3 344.5 191.4C369.3 204.9 384 221.7 384 240C384 243.1 383.3 247.9 381.9 251.7C377.3 264.9 364.1 277 346.9 287.3C346.9 287.3 346.9 287.3 346.9 287.3C346.8 287.3 346.6 287.4 346.5 287.5L346.5 287.5C346.2 287.7 345.9 287.8 345.6 288C310.6 307.4 254.8 320 192 320C132.4 320 79.06 308.7 43.84 290.9C41.97 289.9 40.15 288.1 38.39 288C14.28 274.6 0 258 0 240C0 205.2 53.43 175.5 128 164.6C138.5 163 149.4 161.8 160.7 161.1L160.7 161.1zM391.9 186.6C420.2 182.2 446.1 175.2 468.1 166.1C484.4 159.3 499.5 150.9 512 140.6V176C512 195.3 495.5 213.1 468.2 226.9C453.5 234.3 435.8 240.5 415.8 245.3C415.9 243.6 416 241.8 416 240C416 218.1 405.4 200.1 391.9 186.6V186.6zM384 336C384 354 369.7 370.6 345.6 384C343.8 384.1 342 385.9 340.2 386.9C304.9 404.7 251.6 416 192 416C129.2 416 73.42 403.4 38.39 384C14.28 370.6 .0003 354 .0003 336V300.6C12.45 310.9 27.62 319.3 43.93 326.1C83.44 342.6 135.8 352 192 352C248.2 352 300.6 342.6 340.1 326.1C347.9 322.9 355.4 319.2 362.5 315.2C368.6 311.8 374.3 308 379.7 304C381.2 302.9 382.6 301.7 384 300.6L384 336zM416 278.1C434.1 273.1 452.5 268.6 468.1 262.1C484.4 255.3 499.5 246.9 512 236.6V272C512 282.5 507 293 497.1 302.9C480.8 319.2 452.1 332.6 415.8 341.3C415.9 339.6 416 337.8 416 336V278.1zM192 448C248.2 448 300.6 438.6 340.1 422.1C356.4 415.3 371.5 406.9 384 396.6V432C384 476.2 298 512 192 512C85.96 512 .0003 476.2 .0003 432V396.6C12.45 406.9 27.62 415.3 43.93 422.1C83.44 438.6 135.8 448 192 448z"></path>
-                            </svg><span class="d-inline-block d-sm-none d-md-inline-block">rzut monetą</span></a><div class="">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button><a href="/#"  style="margin-right: 15px;"><i class="fas fa-dice me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block">kostka</span></a><a href="/ruleta" style="margin-right: 15px;"><i class="fa fa-gamepad me-2 text-info"></i><span class="d-inline-block d-sm-none d-md-inline-block ">ruletka</span></a><a href="/coinflip" style="margin-right: 215px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-2 text-info">
+                        <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                        <path d="M512 80C512 98.01 497.7 114.6 473.6 128C444.5 144.1 401.2 155.5 351.3 158.9C347.7 157.2 343.9 155.5 340.1 153.9C300.6 137.4 248.2 128 192 128C183.7 128 175.6 128.2 167.5 128.6L166.4 128C142.3 114.6 128 98.01 128 80C128 35.82 213.1 0 320 0C426 0 512 35.82 512 80V80zM160.7 161.1C170.9 160.4 181.3 160 192 160C254.2 160 309.4 172.3 344.5 191.4C369.3 204.9 384 221.7 384 240C384 243.1 383.3 247.9 381.9 251.7C377.3 264.9 364.1 277 346.9 287.3C346.9 287.3 346.9 287.3 346.9 287.3C346.8 287.3 346.6 287.4 346.5 287.5L346.5 287.5C346.2 287.7 345.9 287.8 345.6 288C310.6 307.4 254.8 320 192 320C132.4 320 79.06 308.7 43.84 290.9C41.97 289.9 40.15 288.1 38.39 288C14.28 274.6 0 258 0 240C0 205.2 53.43 175.5 128 164.6C138.5 163 149.4 161.8 160.7 161.1L160.7 161.1zM391.9 186.6C420.2 182.2 446.1 175.2 468.1 166.1C484.4 159.3 499.5 150.9 512 140.6V176C512 195.3 495.5 213.1 468.2 226.9C453.5 234.3 435.8 240.5 415.8 245.3C415.9 243.6 416 241.8 416 240C416 218.1 405.4 200.1 391.9 186.6V186.6zM384 336C384 354 369.7 370.6 345.6 384C343.8 384.1 342 385.9 340.2 386.9C304.9 404.7 251.6 416 192 416C129.2 416 73.42 403.4 38.39 384C14.28 370.6 .0003 354 .0003 336V300.6C12.45 310.9 27.62 319.3 43.93 326.1C83.44 342.6 135.8 352 192 352C248.2 352 300.6 342.6 340.1 326.1C347.9 322.9 355.4 319.2 362.5 315.2C368.6 311.8 374.3 308 379.7 304C381.2 302.9 382.6 301.7 384 300.6L384 336zM416 278.1C434.1 273.1 452.5 268.6 468.1 262.1C484.4 255.3 499.5 246.9 512 236.6V272C512 282.5 507 293 497.1 302.9C480.8 319.2 452.1 332.6 415.8 341.3C415.9 339.6 416 337.8 416 336V278.1zM192 448C248.2 448 300.6 438.6 340.1 422.1C356.4 415.3 371.5 406.9 384 396.6V432C384 476.2 298 512 192 512C85.96 512 .0003 476.2 .0003 432V396.6C12.45 406.9 27.62 415.3 43.93 422.1C83.44 438.6 135.8 448 192 448z"></path>
+                    </svg><span class="d-inline-block d-sm-none d-md-inline-block nav-linky active">rzut monetą</span></a><div class="">
                         <div class="authenticated"style="display:none">
 <span class="info-box-icon"><svg class="bi bi-coin me-2 text-info" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
 
@@ -149,62 +214,46 @@
                         <div class="col-lg-6 col-xxl-8 offset-xxl-0 mb-4 bg-dark">
                             <div class="card shadow mb-4"></div><div class="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
   <i class="fas fa-dice me-2 text-info"></i>
-  <h4 class="mb-0">KOSTKA</h4>
+  <h4 class="mb-0">RZUT MONETĄ</h4>
 </div>
 
 <div class ="d-flex align-items-center bg-dark text-white px-3 py-2 justify-content-center">
 <div class="btn-group btn-group-toggle" data-toggle="buttons">
   <label class="btn btn-secondary">
-    <input type="radio" name="options" value ="under" id="option1" autocomplete="off" class="radio-button-1"><i class="fa fa-arrow-down me-2 text-info">PONIŻEJ</i>
+    <input type="radio" name="options" value ="under" id="option1" autocomplete="off" class="radio-button-1"><i class="fa fa-arrow-down me-2 text-info">RED</i>
   </label>
-        <button id="animate-btn" class="btn btn-primary" type="button">LOSUJ </button>
+         <button id="coin-button" class="btn btn-primary" type="button">LOSUJ </button>
   <label class="btn btn-secondary">
-    <input type="radio" name="options" value ="over" id="option2" autocomplete="off" class="radio-button-2"> <i class="fa fa-arrow-up me-2 text-info">POWYŻEJ</i>
+    <input type="radio" name="options" value ="over" id="option2" autocomplete="off" class="radio-button-2"> <i class="fa fa-arrow-up me-2 text-info">BLACK</i>
   </label>
 </div>
 </div>
 <div class="align-items-center bg-dark px-3 py-2 justify-content-center">
 <div class="form-group row ">
-  <label for="input1" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
+  <label for="bet-amount-input" class="text-white col-sm-4 col-form-label text-right">Ile stawiasz:</label>
   <div class="col-sm-8">
-<input type="text" id="bet-amount-input" name="bet-amount-input" placeholder="0.00" inputmode="decimal" value="">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="input2" class="text-white col-sm-4 col-form-label text-right">Szansa na wygraną:</label>
-  <div class="col-sm-8">
-      <input type="text" placeholder="50.00%" id="chance-input" name="chance-input" inputmode="decimal" value="50%">
+<input type="text" name="bet-amount-input" inputmode="decimal" id="bet-amount-input">
   </div>
 </div>
 
 <div class="form-group row">
-  <label for="input3" class="text-white col-sm-4 col-form-label text-right">Potencjalny zysk:</label>
+  <label for="profit-amount-input" class="text-white col-sm-4 col-form-label text-right">Potencjalny zysk:</label>
   <div class="col-sm-8">
-    <input type="text" name="profit-amount-input" placeholder="0.00000000" inputmode="decimal" value="..." min="0.01" readonly>
+    <input type="text" name="profit-amount-input" inputmode="decimal" min="0.01" readonly id="profit-amount-input">
   </div>
 </div>
 </div><div class="row bg-dark mb-5">
-  <div class="col-sm-3 d-flex justify-content-center">
-    <div class="egg">
-      <span class="number">1</span>
-    </div>
+<div class="form-group row">
+  <div class="col-sm-8">
+   <div id="coin">
+  <div class="side-a" placeholder="orzeł"></div>
+  <div class="side-b" placeholder="orzeł"></div>
+</div>
   </div>
-  <div class="col-sm-3 d-flex justify-content-center">
-    <div class="egg">
-      <span class="number">2</span>
-    </div>
-  </div>
-  <div class="col-sm-3 d-flex justify-content-center">
-    <div class="egg">
-      <span class="number">3</span>
-    </div>
-  </div>
-  <div class="col-sm-3 d-flex justify-content-center">
-    <div class="egg">
-      <span class="number">4</span>
-    </div>
-  </div>
-</div><small class="form-text text-white">Historia gier w kostkę:</small>
+</div>
+
+</div>
+<small class="form-text text-white">Historia gier w kostkę:</small>
 
 <table id="example" class="table table-striped table-bordered text-white" cellspacing="0" width="100%">
         <thead>
@@ -212,7 +261,6 @@
                 <th>ID LOSU</th>
                 <th>CZAS</th>
                 <th>POSTAWIONO</th>
-                <th>SZANSA</th>
                 <th>WYLOSOWANO</th>
                 <th>PROFIT</th>
             </tr>
@@ -246,8 +294,8 @@
           </div>
           <div id="chatroom" class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 650px; overflow: auto;">
 
-              
-          
+
+
           </div>
           <div class="card-footer text-muted d-flex justify-content-start align-items-center">
             <div class="input-group mb-0">
@@ -344,70 +392,71 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
-        // Bind click event to button
-        $("#animate-btn").click(function() {
-            // Get input values
-            var betAmountInput = $("#bet-amount-input").val();
-            var chanceInput = $("#chance-input").val();
-            var options
-            if($('#option1').prop('checked')){
-                options = $("#option1").val();
-            }
-            else if($('#option2').prop('checked')){
-                options = $("#option2").val();
-            }
+ function flipCoin() {
+  var betAmountInput = $("#bet-amount-input").val();
+  var chance = Math.random();
+  var options;
 
-            // Make POST request
-            $.post("/dice/play", {
-                "bet-amount-input": betAmountInput,
-                "chance-input": chanceInput,
-                "options": options
-            }, function(data) {
-                data = data.padStart(4, "0");
-                var dataArr = data.split("");
+  if ($('#option1').prop('checked')) {
+    options = "RED";
+  } else if ($('#option2').prop('checked')) {
+    options = "BLACK"
+  }
+     $('#coin').removeClass();
+     setTimeout(function(){
+         if(chance <= 0.5){
+             $('#coin').addClass('heads');
+             console.log('it is head');
+         }
+         else{
+             $('#coin').addClass('tails');
+             console.log('it is tails');
+         }
+     }, 100);
 
-                $('.egg').each(function(index) {
-                    var egg = $(this);
-                    setTimeout(function() {
-                        egg.addClass('animate');
-                        // Set the number inside the egg from the data array
-                        setTimeout(function() {
-                            egg.find('.number').text(dataArr[index]);
-                            egg.removeClass('animate');
-                        }, 1000);
-                    }, index * 200);
-                });
-                $.get("/user", function(data) {
-                    if (data.balance > parseFloat($('#kasa').text())) {
-                        $('#kasa').animate({ color: '#0f0' }, 500, function() {
+setTimeout(function() {
+    $.ajax({
+        type: "POST",
+        url: "/coinflip/play",
+        data: {
+            "bet-amount-input": betAmountInput,
+            "chance": chance,
+            "options": options
+        },
+        success: function (response) {
+            $.get("/user", function (data) {
+                if (data.balance > parseFloat($('#kasa').text())) {
+                    // Animate the balance text to blink green
+                    $('#kasa').animate({color: '#0f0'}, 500, function () {
 
-                        });
-                        $('.egg').css('background-color', '#0f0').delay(1000).queue(function() {
-                        });
-                    } else {
-                        $('#kasa').animate({ color: '#f00' }, 500, function() {
-
-                        });
-                        $('.egg').css('background-color', '#f00').delay(1000).queue(function() {
-
-                        });
-                    }
+                    });
+                } else {
+                    // Animate the balance text to blink red
+                    $('#kasa').animate({color: '#f00'}, 500, function () {
+                    });
+                }
 
 
-                    $('#kasa').text(data.balance.toFixed(2));
-                });
+                $('#kasa').text(data.balance.toFixed(2));
             });
-        });
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Obsłuż błąd
+            console.log(error);
+        }
     });
-    $('#egg1 .number').text(1);
-    $('#egg2 .number').text(2);
-    $('#egg3 .number').text(3);
-    $('#egg4 .number').text(4);
+}, 3100);
 
+}
 
+$('#coin-button').on('click', flipCoin);
+</script>
+
+<script>
 
 </script>
+
 <script type="text/javascript">
     function deleteAlerts(){
 
@@ -476,7 +525,7 @@
 <script>
     $(document).ready(function() {
         $('.btn.rounded-circle.border-0').click()
-        $.get('/dice/history', function(data) {
+        $.get('/coinflip/history', function(data) {
             $.each(data, function(index, item) {
                 let lastIndex = item.timestamp.lastIndexOf(":");
                 item.timestamp = item.timestamp.substring(0, lastIndex);
@@ -485,7 +534,6 @@
                 row.append($('<td>').text(item.id));
                 row.append($('<td>').text(item.timestamp));
                 row.append($('<td>').text(item.bet_amount));
-                row.append($('<td>').text(item.odds));
                 row.append($('<td>').text(item.result));
                 row.append($('<td>').text(item.profit));
                 $('#example tbody').append(row);
@@ -509,32 +557,25 @@
 
 </script>
 <script>
-    $(document).ready(function() {  //win values
+  // Pobieranie referencji do pól wejściowych
+  const betAmountInput = document.getElementById('bet-amount-input');
+  const profitAmountInput = document.getElementById('profit-amount-input');
 
-        var $betInput = $('#bet-amount-input');
-        var $chanceInput = $('#chance-input');
-        var $profitInput = $('input[name="profit-amount-input"]');
+  // Dodawanie nasłuchiwania na zmianę wartości w polu "bet-amount-input"
+  betAmountInput.addEventListener('input', function() {
+    // Pobieranie wartości wpisanej przez użytkownika
+    const betAmount = parseFloat(betAmountInput.value);
 
-
-        $betInput.add($chanceInput).on('input', function() {
-            var betAmount = parseFloat($betInput.val());
-            var chancePercent = parseFloat($chanceInput.val());
-            if (isNaN(betAmount) || isNaN(chancePercent)) {
-                $profitInput.val(''); //
-
-
-            } else {
-                var chance = chancePercent / 100;
-                var profit = (betAmount / chance) - betAmount;
-                $profitInput.val(profit.toFixed(2));
-                var txt = chancePercent * 100;
-                var belowText = 'PONIŻEJ ' + (txt).toFixed(0);
-                var aboveText = 'POWYŻEJ ' + (10000-txt).toFixed(0);
-                $('#option1 + i').text(belowText);
-                $('#option2 + i').text(aboveText);
-            }
-        });
-    });
+    // Sprawdzanie, czy wartość jest liczbą
+    if (!isNaN(betAmount)) {
+      // Obliczanie potencjalnego zysku i ustawianie wartości w polu "profit-amount-input"
+      const profitAmount = betAmount * 2;
+      profitAmountInput.value = profitAmount.toFixed(2);
+    } else {
+      // Jeśli wartość nie jest liczbą, ustawianie pustej wartości w polu "profit-amount-input"
+      profitAmountInput.value = '';
+    }
+  });
 </script>
 <script>
     connect();

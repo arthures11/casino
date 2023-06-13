@@ -29,9 +29,9 @@ public class UrlController {
     public ModelAndView getregister() {
         return new ModelAndView("register");
     }
-    @RequestMapping(value="/table")
+    @RequestMapping(value="/coinflip")
     public ModelAndView gettable() {
-        return new ModelAndView("table");
+        return new ModelAndView("coinflip");
     }
     @RequestMapping(value="/ruleta")
     public ModelAndView getRuleta() {

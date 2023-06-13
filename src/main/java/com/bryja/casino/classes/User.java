@@ -3,7 +3,9 @@ package com.bryja.casino.classes;
 import com.bryja.casino.utils.ValidEmail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.persistence.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import java.util.List;
         public int won_games=0;
         public int lost_games=0;
         public int wagered=0;
+
 
 
 
@@ -104,6 +107,10 @@ import java.util.List;
             fetch = FetchType.LAZY, mappedBy = "user")
     private List<RouletteHistory> roulette_history = new ArrayList<RouletteHistory>();
 
+    @OneToMany(targetEntity=CoinflipHistory.class,cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, mappedBy = "user")
+    private List<CoinflipHistory> coinflip_history = new ArrayList<CoinflipHistory>();
+
         @OneToMany(targetEntity=Notification.class,cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY, mappedBy = "user")
         private List<Notification> notyfikacje = new ArrayList<Notification>();
@@ -123,6 +130,15 @@ import java.util.List;
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+
+    public List<CoinflipHistory> getCoinflip_history() {
+        return coinflip_history;
+    }
+
+    public void setCoinflip_history(List<CoinflipHistory> coinflip_history) {
+        this.coinflip_history = coinflip_history;
     }
 
     public List<RouletteHistory> getRoulette_history() {
